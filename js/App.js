@@ -4,7 +4,7 @@ class App {
 
         this.taskView = new TaskView();
         this.packageView = new PackageView();
-        this.robotView = new RobotView();
+        this.robotView = new RobotView(this.dataService);
         this.subsystemView = new SubsystemView();
 
         document.addEventListener('deleteRobot', (event) => {

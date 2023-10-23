@@ -1,12 +1,21 @@
+mock_tasks = [
+    { id: 1, type: "task", name: "Задача 1", subsystem: "Подсистема 1" },
+    { id: 2, type: "package", name: "Пакет 1", tasks: [
+            { id: 4, name: "Задача в пакете 1", subsystem: "Подсистема 2" },
+            { id: 5, name: "Задача в пакете 2", subsystem: "Подсистема 2"}] },
+    { id: 3, type: "task", name: "Задача 2", subsystem: "Подсистема 3" },
+    // ... и так далее
+];
+
+mock_subsystems = [
+    { id: 1, type: "subsystem", name: "Подсистема 1", parentId: null },
+    { id: 2, type: "subsystem", name: "Подсистема 1.1", parentId: 1 },
+    { id: 3, type: "subsystem", name: "Подсистема 1.2", parentId: 1 },
+    { id: 4, type: "subsystem", name: "Подсистема 1.1.1", parentId: 2 },
+];
+
 class DataService {
     constructor() {
-        // Mock data
-        this.tasks = [
-            new Task(1, "Задача 1", "Подсистема 1", 1),
-            new Task(2, "Задача 2", "Подсистема 2", 1),
-            new Task(3, "Задача 3", "Подсистема 3", 2),
-            // ... добавьте другие задачи по аналогии
-        ];
 
         this.packages = [
             new Package(1, "Пакет 1"),
@@ -20,29 +29,11 @@ class DataService {
             // ... добавьте других роботов по аналогии
         ];
 
-        this.subsystems = [
-            new Subsystem(1, "Подсистема 1"),
-            new Subsystem(2, "Подсистема 2"),
-            new Subsystem(3, "Подсистема 3"),
-            // ... добавьте другие подсистемы по аналогии
-        ];
-
         this.tasks = [];
         this.packages = [];
-
-        // Пример данных, которые могут приходить с сервера
-        const rawData = [
-            { id: 1, type: "task", name: "Задача 1", subsystem: "Подсистема 1" },
-            { id: 2, type: "package", name: "Пакет 1", tasks: [
-                { id: 4, name: "Задача в пакете 1", subsystem: "Подсистема 2" },
-                { id: 5, name: "Задача в пакете 2", subsystem: "Подсистема 2"}] },
-            { id: 3, type: "task", name: "Задача 2", subsystem: "Подсистема 3" },
-            // ... и так далее
-        ];
-
         this.items = [];
 
-        rawData.forEach(item => {
+        mock_tasks.forEach(item => {
             if (item.type === "task") {
                 this.items.push(new Task(item.id, item.name, item.subsystem));
             } else if (item.type === "package") {
@@ -54,6 +45,16 @@ class DataService {
                 });
             }
         });
+
+        this.subSystems = mock_subsystems.map(data => new SubSystem(data.id, data.name));
+        mock_subsystems.forEach(data => {
+            if (data.parentId) {
+                const parent = this.subSystems.find(subSystem => subSystem.id === data.parentId);
+                const child = this.subSystems.find(subSystem => subSystem.id === data.id);
+                parent.addChild(child);
+            }
+        });
+
     }
 
     deleteRobot(id) {
@@ -62,6 +63,17 @@ class DataService {
 
     addRobot(robot) {
         this.robots.push(robot);
+    }
+
+    getRobots() {
+        return this.robots;
+    }
+
+    updateRobot(updatedRobot) {
+        const index = this.robots.findIndex(robot => robot.id === updatedRobot.id);
+        if (index !== -1) {
+            this.robots[index] = updatedRobot;
+        }
     }
 
     getItems() {
@@ -76,11 +88,7 @@ class DataService {
         return this.packages;
     }
 
-    getRobots() {
-        return this.robots;
-    }
-
     getSubsystems() {
-        return this.subsystems;
+        return this.subSystems;
     }
 }
