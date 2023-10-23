@@ -1,95 +1,36 @@
-
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="ru">
 <head>
-    <meta charset='UTF-8'>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/main.css">
-    <title>Robot Management System</title>
+    <title>Роботы и Задачи</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<h1>Robot Management System</h1>
-
-<!-- Панель фильтрации по подсистемам -->
-<!-- Экран подсистем -->
-
-<!-- Экран настроек -->
-<div id="settings-section">
-    <h2>Settings</h2>
-    
-    <!-- Список настроек -->
-    <div id="settings-list">
-        <!-- Здесь будет динамический список настроек -->
+<div id="header">
+    <div id="robots"></div>
+    <button id="addRobot">Добавить робота</button>
+</div>
+<div id="main">
+    <div id="sidebar">
+        <div id="subsystems"></div>
+        <!-- Если будут настройки, их можно добавить ниже -->
+        <!-- <div id="settings"></div> -->
     </div>
-    
-    <!-- Панель управления настройками -->
-    <div id="settings-controls">
-        <button id="save-settings">Save Settings</button>
+    <div id="content">
+        <div id="packages"></div>
     </div>
 </div>
 
-<div id="subsystems-section">
-    <h2>Subsystems</h2>
-    
-    <!-- Список подсистем -->
-    <div id="subsystems-list">
-        <!-- Здесь будет динамический список подсистем с чекбоксами -->
-    </div>
-    
-    <!-- Панель управления подсистемами -->
-    <div id="subsystems-controls">
-        <button id="select-all-subsystems">Select All</button>
-        <button id="deselect-all-subsystems">Deselect All</button>
-    </div>
-</div>
-
-<div id="subsystem-filter">
-    <h2>Filter by Subsystem</h2>
-    <!-- Здесь будет динамический список подсистем с чекбоксами -->
-</div>
-
-<!-- Список задач и пакетов -->
-<!-- Экран роботов -->
-<div id="robots-section">
-    <h2>Robots</h2>
-    
-    <!-- Список роботов -->
-    <div id="robots-list">
-        <!-- Здесь будет динамический список роботов -->
-    </div>
-    
-    <!-- Панель управления роботами -->
-    <div id="robots-controls">
-        <button id="add-robot">Add Robot</button>
-        <button id="delete-selected-robot">Delete Selected</button>
-    </div>
-    
-    <!-- Детали робота (при клике на робота) -->
-    <div id="robot-details" style="display: none;">
-        <h3>Robot Details</h3>
-        <!-- Здесь будут детали выбранного робота -->
-    </div>
-</div>
-
-<div id="tasks-packages-list">
-    <h2>Tasks and Packages</h2>
-    <!-- Здесь будет динамический список задач и пакетов -->
-</div>
-
-<!-- Панель управления задачами и пакетами -->
-<div id="tasks-packages-controls">
-    <button id="move-to-top">Move to Top</button>
-    <button id="delete-selected">Delete Selected</button>
-    <button id="select-all">Select All</button>
-</div>
-
-<script src="scripts/Fetch.js"></script>
-<script src="scripts/Task.js"></script>
-<script src="scripts/Settings.js"></script>
-<script src="scripts/Subsystem.js"></script>
-<script src="scripts/Robot.js"></script>
-<script src="scripts/main.js"></script>
-
+<script src="js/models/Task.js"></script>
+<script src="js/models/Package.js"></script>
+<script src="js/models/Robot.js"></script>
+<script src="js/models/Subsystem.js"></script>
+<script src="js/views/TaskView.js"></script>
+<script src="js/views/PackageView.js"></script>
+<script src="js/views/RobotView.js"></script>
+<script src="js/views/SubsystemView.js"></script>
+<script src="js/services/DataService.js"></script>
+<script src="js/App.js"></script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+
+#header {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+#main {
+    display: flex;
+}
+
+#sidebar {
+    flex: 1;
+    max-width: 200px;
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+    margin-right: 20px;
+}
+
+#content {
+    flex: 3;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+#robots, #subsystems, #packages {
+    margin-bottom: 30px;
+}
+
+#robots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;  /* Добавляет промежуток между роботами */
+}
+
+#subsystems {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+#packages {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.robot, .subsystem, .package, .task {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.robot {
+    flex: 1;
+    text-align: center;
+    max-width: 150px;
+}
+
+.subsystem {
+    flex: 1;
+    text-align: center;
+    max-width: 150px;
+}
+
+.package {
+    width: 100%;
+}
+
+.task {
+    display: inline-block;
+    margin-right: 10px;
+}
