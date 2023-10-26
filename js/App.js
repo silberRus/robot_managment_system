@@ -53,6 +53,36 @@ class App {
                 itemsContainer.appendChild(this.packageView.render(item));
             }
         });
+
+         itemsContainer.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        });
+
+        itemsContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();  // Разрешить сброс
+        });
+
+        itemsContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+
+            const draggedId = e.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(draggedId);
+            const dropTarget = e.target.closest('.task, .package');  // Предполагая, что у вас есть эти классы
+
+            if (dropTarget && dropTarget !== draggedElement) {
+                const siblings = Array.from(itemsContainer.children);
+                const draggedIndex = siblings.indexOf(draggedElement);
+                const dropTargetIndex = siblings.indexOf(dropTarget);
+
+                // Проверка, находится ли перетаскиваемый элемент внутри пакета и является ли целью тот же пакет
+                if (draggedElement.classList.contains('package') && dropTarget.classList.contains('package') && draggedElement.dataset.packageId === dropTarget.dataset.packageId) {
+                    itemsContainer.insertBefore(draggedElement, draggedIndex < dropTargetIndex ? dropTarget.nextSibling : dropTarget);
+                } else if (!draggedElement.classList.contains('package') && !dropTarget.classList.contains('package')) {
+                    itemsContainer.insertBefore(draggedElement, draggedIndex < dropTargetIndex ? dropTarget.nextSibling : dropTarget);
+                }
+            }
+        });
+
     }
 
     init() {

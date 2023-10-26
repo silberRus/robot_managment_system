@@ -24,23 +24,59 @@ class RobotView {
         return robotElement;
     }
 
+    renderSubsystemCheckbox(subsystem, robot) {
+        const container = document.createElement('div');
+        container.className = 'subsystem-checkbox-container';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'subsystem-' + subsystem.id;
+        checkbox.checked = robot.subsystems.includes(subsystem.name);
+
+        const label = document.createElement('label');
+        label.htmlFor = 'subsystem-' + subsystem.id;
+        label.innerText = subsystem.name;
+
+        container.appendChild(checkbox);
+        container.appendChild(label);
+
+        checkbox.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                this.checkChildSubsystems(container);
+            } else {
+                this.uncheckChildSubsystems(container);
+            }
+        });
+
+        if (subsystem.children.length > 0) {
+            const childrenContainer = document.createElement('div');
+            childrenContainer.className = 'children';
+            subsystem.children.forEach(child => {
+                childrenContainer.appendChild(this.renderSubsystemCheckbox(child, robot));
+            });
+            container.appendChild(childrenContainer);
+        }
+
+        return container;
+    }
+
+    checkChildSubsystems(container) {
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = true);
+    }
+
+    uncheckChildSubsystems(container) {
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    }
+
     selectSubsystems(robot) {
         const modal = document.createElement('div');
         modal.className = 'modal';
 
         const subsystemsList = this.dataService.getSubsystems();
-        subsystemsList.forEach(subsystem => {
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = 'subsystem-' + subsystem.id;
-            checkbox.checked = robot.subsystems.includes(subsystem.name);
-
-            const label = document.createElement('label');
-            label.htmlFor = 'subsystem-' + subsystem.id;
-            label.innerText = subsystem.name;
-
-            modal.appendChild(checkbox);
-            modal.appendChild(label);
+        subsystemsList.filter(subsystem => !subsystem.parentId).forEach(subsystem => {
+            modal.appendChild(this.renderSubsystemCheckbox(subsystem, robot));
         });
 
         const saveButton = document.createElement('button');

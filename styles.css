@@ -71,6 +71,13 @@ body {
     flex: 1;
     text-align: center;
     max-width: 150px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.subsystem-checkbox-container {
+    margin-left: 20px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .package {

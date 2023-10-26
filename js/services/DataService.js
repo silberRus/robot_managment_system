@@ -8,10 +8,80 @@ mock_tasks = [
 ];
 
 mock_subsystems = [
-    { id: 1, type: "subsystem", name: "Подсистема 1", parentId: null },
-    { id: 2, type: "subsystem", name: "Подсистема 1.1", parentId: 1 },
-    { id: 3, type: "subsystem", name: "Подсистема 1.2", parentId: 1 },
-    { id: 4, type: "subsystem", name: "Подсистема 1.1.1", parentId: 2 },
+    {
+        "id": "ТС",
+        "name": "Весь транспорт",
+        "children": [
+            {
+                "id": "МЛ",
+                "name": "Маршрутные листы"
+            },
+            {
+                "id": "Сборка",
+                "name": "Сборка заказа"
+            }
+        ]
+    },
+    {
+        "id": "xPL",
+        "name": "Все процессы xPL",
+        "children": [
+            {
+                "id": "МаршрутныеЛисты",
+                "name": "Все процессы xPL"
+            },
+            {
+                "id": "РазмещениеПослеМежблока",
+                "name": "Все процессы xPL"
+            }
+        ]
+    },
+    {
+        "id": "WMS",
+        "name": "Все складские процессы",
+        "children": [
+            {
+                "id": "АптечныйХаб",
+                "name": "Аптечный хаб"
+            }
+        ]
+    },
+    {
+        "id": "Продажи",
+        "name": "Все продажи",
+        "children": [
+            {
+                "id": "Аптека",
+                "name": "Продажи.Аптека"
+            },
+            {
+                "id": "ПодборТоваров",
+                "name": "Продажи.ПодборТоваров"
+            },
+            {
+                "id": "Схема_702",
+                "name": "Продажи.Схема_702"
+            },
+            {
+                "id": "Маркировка",
+                "name": "Продажи.Маркировка"
+            },
+            {
+                "id": "ВидыРасчетов",
+                "name": "Продажи.ВидыРасчетов"
+            }
+        ]
+    },
+    {
+        "id": "БюджетныеПродажи",
+        "name": "БюджетныеПродажи",
+        "children": [
+            {
+                "id": "АктуализацияСтатусовРА",
+                "name": "БюджетныеПродажи.АктуализацияСтатусовРА"
+            }
+        ]
+    }
 ];
 
 class DataService {
@@ -46,15 +116,7 @@ class DataService {
             }
         });
 
-        this.subSystems = mock_subsystems.map(data => new SubSystem(data.id, data.name));
-        mock_subsystems.forEach(data => {
-            if (data.parentId) {
-                const parent = this.subSystems.find(subSystem => subSystem.id === data.parentId);
-                const child = this.subSystems.find(subSystem => subSystem.id === data.id);
-                parent.addChild(child);
-            }
-        });
-
+        this.subSystems = this.parseSubsystems(mock_subsystems);
     }
 
     deleteRobot(id) {
@@ -90,5 +152,16 @@ class DataService {
 
     getSubsystems() {
         return this.subSystems;
+    }
+
+    parseSubsystems(data) {
+        return data.map(item => {
+            const subSystem = new SubSystem(item.id, item.name);
+            if (item.children && item.children.length) {
+                const children = this.parseSubsystems(item.children);
+                children.forEach(child => subSystem.addChild(child));
+            }
+            return subSystem;
+        });
     }
 }
