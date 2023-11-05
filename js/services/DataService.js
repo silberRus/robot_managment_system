@@ -1,109 +1,16 @@
-mock_tasks = [
-    { id: 1, type: "task", name: "Задача 1", subsystem: "Подсистема 1" },
-    { id: 2, type: "package", name: "Пакет 1", tasks: [
-            { id: 4, name: "Задача в пакете 1", subsystem: "Подсистема 2" },
-            { id: 5, name: "Задача в пакете 2", subsystem: "Подсистема 2"}] },
-    { id: 3, type: "task", name: "Задача 2", subsystem: "Подсистема 3" },
-    // ... и так далее
-];
-
-mock_subsystems = [
-    {
-        "id": "ТС",
-        "name": "Весь транспорт",
-        "children": [
-            {
-                "id": "МЛ",
-                "name": "Маршрутные листы"
-            },
-            {
-                "id": "Сборка",
-                "name": "Сборка заказа"
-            }
-        ]
-    },
-    {
-        "id": "xPL",
-        "name": "Все процессы xPL",
-        "children": [
-            {
-                "id": "МаршрутныеЛисты",
-                "name": "Все процессы xPL"
-            },
-            {
-                "id": "РазмещениеПослеМежблока",
-                "name": "Все процессы xPL"
-            }
-        ]
-    },
-    {
-        "id": "WMS",
-        "name": "Все складские процессы",
-        "children": [
-            {
-                "id": "АптечныйХаб",
-                "name": "Аптечный хаб"
-            }
-        ]
-    },
-    {
-        "id": "Продажи",
-        "name": "Все продажи",
-        "children": [
-            {
-                "id": "Аптека",
-                "name": "Продажи.Аптека"
-            },
-            {
-                "id": "ПодборТоваров",
-                "name": "Продажи.ПодборТоваров"
-            },
-            {
-                "id": "Схема_702",
-                "name": "Продажи.Схема_702"
-            },
-            {
-                "id": "Маркировка",
-                "name": "Продажи.Маркировка"
-            },
-            {
-                "id": "ВидыРасчетов",
-                "name": "Продажи.ВидыРасчетов"
-            }
-        ]
-    },
-    {
-        "id": "БюджетныеПродажи",
-        "name": "БюджетныеПродажи",
-        "children": [
-            {
-                "id": "АктуализацияСтатусовРА",
-                "name": "БюджетныеПродажи.АктуализацияСтатусовРА"
-            }
-        ]
-    }
-];
 
 class DataService {
     constructor() {
 
-        this.packages = [
-            new Package(1, "Пакет 1"),
-            new Package(2, "Пакет 2"),
-            // ... добавьте другие пакеты по аналогии
-        ];
-
-        this.robots = [
-            new Robot(1, "Робот 1", ["Подсистема 1", "Подсистема 2"]),
-            new Robot(2, "Робот 2", ["Подсистема 3"]),
-            // ... добавьте других роботов по аналогии
-        ];
+        //this.connector = new ConnectorAPI();
+        this.connector = new ConnectorMock();
+        this.robots = this.connector.robots;
 
         this.tasks = [];
-        this.packages = [];
         this.items = [];
 
-        mock_tasks.forEach(item => {
+        console.log(this.connector.tasks);
+        this.connector.tasks.forEach(item => {
             if (item.type === "task") {
                 this.items.push(new Task(item.id, item.name, item.subsystem));
             } else if (item.type === "package") {
@@ -116,7 +23,7 @@ class DataService {
             }
         });
 
-        this.subSystems = this.parseSubsystems(mock_subsystems);
+        this.subSystems = this.parseSubsystems(this.connector.subsystems);
     }
 
     deleteRobot(id) {
