@@ -71,33 +71,62 @@ class RobotView {
     }
 
     selectSubsystems(robot) {
+        const modal = this.createModal();
+        const subsystemsList = this.dataService.getSubsystems();
+        this.appendSubsystemCheckboxes(modal, subsystemsList, robot);
+
+        const saveButton = this.createSaveButton(() => {
+            const checkedSubsystems = this.getCheckedSubsystems(modal, subsystemsList);
+            this.saveSelectedSubsystems(robot, checkedSubsystems, modal);
+        });
+        modal.appendChild(saveButton);
+        document.body.appendChild(modal);
+    }
+
+    createModal() {
         const modal = document.createElement('div');
         modal.className = 'modal';
+        return modal;
+    }
 
-        const subsystemsList = this.dataService.getSubsystems();
+    appendSubsystemCheckboxes(modal, subsystemsList, robot) {
         subsystemsList.filter(subsystem => !subsystem.parentId).forEach(subsystem => {
             modal.appendChild(this.renderSubsystemCheckbox(subsystem, robot));
         });
+    }
 
+    createSaveButton(onClickHandler) {
         const saveButton = document.createElement('button');
         saveButton.innerText = 'Сохранить';
-        saveButton.addEventListener('click', () => {
-            const checkedSubsystems = [];
-            subsystemsList.forEach(subsystem => {
-                const checkbox = modal.querySelector('#subsystem-' + subsystem.id);
-                if (checkbox.checked) {
-                    checkedSubsystems.push(subsystem.name);
+        saveButton.addEventListener('click', onClickHandler);
+        return saveButton;
+    }
+
+    getCheckedSubsystems(modal, subsystemsList) {
+        const getAllSubsystems = (subs, list = []) => {
+            subs.forEach(sub => {
+                list.push(sub);
+                if (sub.children) {
+                    getAllSubsystems(sub.children, list);
                 }
             });
-            robot.subsystems = checkedSubsystems;
-            this.dataService.updateRobot(robot);
-            this.updateView();
-            modal.remove();
-        });
-        modal.appendChild(saveButton);
+            return list;
+        };
 
-        document.body.appendChild(modal);
+        const allSubsystems = getAllSubsystems(subsystemsList);
+        return allSubsystems.filter(sub => {
+            const checkbox = modal.querySelector('#subsystem-' + sub.id);
+            return checkbox && checkbox.checked;
+        }).map(sub => sub.name);
     }
+
+    saveSelectedSubsystems(robot, checkedSubsystems, modal) {
+        robot.subsystems = checkedSubsystems;
+        this.dataService.updateRobot(robot);
+        this.updateView();
+        modal.remove();
+    }
+
 
     updateView() {
         const robotsContainer = document.getElementById('robots');
@@ -107,7 +136,6 @@ class RobotView {
             robotsContainer.appendChild(this.render(robot));
         });
     }
-
 
     deleteRobot(id) {
         const event = new CustomEvent('deleteRobot', { detail: id });
