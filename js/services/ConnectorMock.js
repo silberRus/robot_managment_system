@@ -96,4 +96,7 @@ class ConnectorMock {
             new Robot(2, "Робот 2", ),
         ];
     }
+    getRobots() {
+        return this.robots;
+    }
 }

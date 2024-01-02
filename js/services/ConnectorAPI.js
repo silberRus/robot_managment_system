@@ -1,7 +1,10 @@
 class ConnectorAPI {
-    constructor(baseURL = 'https://default-api.example.com/', username = 'defaultUsername', password = 'defaultPassword') {
+    constructor(baseURL = 'http://localhost/MSK/hs/queue_actions/', basicAuth = 'Basic Um9ib3Q6MTIzNDU2') {
         this.baseURL = baseURL;
-        this.basicAuth = "Basic " + btoa(username + ":" + password);
+        this.basicAuth = basicAuth;
+        this.robots = [];
+        this.tasks = [];
+        this.subsystems = [];
     }
 
     async makeRequest(endpoint, method = 'GET', data = null) {
@@ -24,5 +27,25 @@ class ConnectorAPI {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return await response.json();
+    }
+
+    async getRobots() {
+        return this.makeRequest('robots');
+    }
+
+    async addRobot(robot) {
+        return this.makeRequest('robots', 'POST', robot);
+    }
+
+    async deleteRobot(id) {
+        return this.makeRequest('robots/' + id, 'DELETE');
+    }
+
+    async changeRobot(robot) {
+        return this.makeRequest('robots/' + robot.id, 'POST', robot);
+    }
+
+    getSubsystems() {
+        return this.makeRequest('subsystems');
     }
 }

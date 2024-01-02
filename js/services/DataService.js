@@ -2,12 +2,18 @@
 class DataService {
     constructor() {
 
-        //this.connector = new ConnectorAPI();
-        this.connector = new ConnectorMock();
-        this.robots = this.connector.robots;
-
+        this.connector = new ConnectorAPI();
+        //this.connector = new ConnectorMock();
+        //this.connector = new Connector1CInside();
         this.tasks = [];
         this.items = [];
+
+        this.subSystems = [];
+        this.connector.getSubsystems().then(data => {
+            this.subSystems = this.parseSubsystems(data);
+        })
+
+        this.robots = [];
 
         console.log(this.connector.tasks);
         this.connector.tasks.forEach(item => {
@@ -22,19 +28,18 @@ class DataService {
                 });
             }
         });
-
-        this.subSystems = this.parseSubsystems(this.connector.subsystems);
     }
 
-    deleteRobot(id) {
-        this.robots = this.robots.filter(robot => robot.id !== id);
+    async deleteRobot(id) {
+        await this.connector.deleteRobot(id);
     }
 
-    addRobot(robot) {
-        this.robots.push(robot);
-    }
+    addRobot = async robot => {
+        await this.robots.addRobot(robot);
+    };
 
-    getRobots() {
+    async getRobots() {
+        this.robots = JSON.parse(await this.connector.getRobots());
         return this.robots;
     }
 

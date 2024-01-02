@@ -9,14 +9,13 @@ class App {
 
         document.addEventListener('deleteRobot', (event) => {
             this.dataService.deleteRobot(event.detail);
-            this.renderRobots();
+            this.dataService.getRobots().then(r => this.renderRobots(r));
         });
     }
 
-    renderRobots() {
+    renderRobots(robots) {
         const robotsContainer = document.getElementById('robots');
         robotsContainer.innerHTML = '';  // Очистка контейнера
-        const robots = this.dataService.getRobots();
         robots.forEach(robot => {
             robotsContainer.appendChild(this.robotView.render(robot));
         });
@@ -86,7 +85,7 @@ class App {
     }
 
     init() {
-        this.renderRobots();
+        this.dataService.getRobots().then(r => this.renderRobots(r));
         this.renderSubsystems();
         this.renderItems();
 

@@ -107,3 +107,22 @@ body {
     flex-direction: column;
     gap: 10px;
 }
+
+/* Кнопки */
+button {
+    background-color: #f8db8d;
+    color: #000000;
+    border-color: #fae366;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+/* Фон */
+body {
+    background-color: #d3d7cc;
+}
+
+/* Анимация */
+.animated {
+    animation: fadeIn 1s ease-out;
+}
