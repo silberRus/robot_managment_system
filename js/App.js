@@ -1,7 +1,6 @@
 class App {
     constructor() {
         this.dataService = new DataService();
-
         this.taskView = new TaskView();
         this.packageView = new PackageView();
         this.robotView = new RobotView(this.dataService);
@@ -16,7 +15,7 @@ class App {
 
     updateView() {
         this.dataService.getRobots().then(r => this.renderRobots(r));
-        this.dataService.getTasks().filter(t => this.renderPackagesAndTasks(t));
+        this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
     }
 
     renderRobots(robots) {
@@ -27,9 +26,9 @@ class App {
         });
     }
 
-    renderSubsystems() {
+    renderSubsystems(subsystems) {
         const subsystemsContainer = document.getElementById('subsystems');
-        const subsystems = this.dataService.getSubsystems();
+        subsystemsContainer.innerHTML = '';
         subsystems.forEach(subsystem => {
             subsystemsContainer.appendChild(this.subsystemView.render(subsystem));
         });
@@ -37,12 +36,12 @@ class App {
 
     renderPackagesAndTasks(PackagesAndTasks) {
         const packagesContainer = document.getElementById('packages');
-        const standaloneTasks = this.dataService.getTasks().filter(task => !task.packageId);
+        packagesContainer.innerHTML = '';
         PackagesAndTasks.forEach(t => {
-            if (t.type === "task") {
-                packagesContainer.appendChild(this.taskView.render(t));
-            } else if (t.type === "package") {
+            if (t.tasks) {
                 packagesContainer.appendChild(this.packageView.render(t));
+            } else {
+                packagesContainer.appendChild(this.taskView.render(t));
             }
         });
     }
@@ -58,7 +57,7 @@ class App {
             }
         });
 
-         itemsContainer.addEventListener('dragstart', (e) => {
+        itemsContainer.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', e.target.id);
         });
 
@@ -86,12 +85,12 @@ class App {
                 }
             }
         });
-
     }
 
     init() {
+        this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
         this.dataService.getRobots().then(r => this.renderRobots(r));
-        this.renderSubsystems();
+        this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
         this.renderItems();
 
         document.getElementById('addRobot').addEventListener('click', this.addRobot.bind(this));

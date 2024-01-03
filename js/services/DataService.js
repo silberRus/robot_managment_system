@@ -5,29 +5,12 @@ class DataService {
         this.connector = new ConnectorAPI();
         //this.connector = new ConnectorMock();
         //this.connector = new Connector1CInside();
-        this.tasks = [];
-        this.items = [];
 
-        this.subSystems = [];
         this.connector.getSubsystems().then(data => {
             this.subSystems = this.parseSubsystems(data);
         })
 
         this.robots = [];
-
-        console.log(this.connector.tasks);
-        this.connector.tasks.forEach(item => {
-            if (item.type === "task") {
-                this.items.push(new Task(item.id, item.name, item.subsystem));
-            } else if (item.type === "package") {
-                const pkg = new Package(item.id, item.name);
-                this.items.push(pkg);
-                item.tasks.forEach(taskData => {
-                    const task = new Task(taskData.id, taskData.name, taskData.subsystem, pkg.id);
-                    pkg.addTask(task);
-                });
-            }
-        });
     }
 
     async deleteRobot(robot) {
@@ -58,16 +41,26 @@ class DataService {
         return this.items;
     }
 
-    getTasks() {
+    async getTasks() {
+        const tasks = await this.connector.getTasks();
+        this.tasks = [];
+        tasks.forEach(item => {
+            if (item.type === "task") {
+                this.tasks.push(new Task(item.UID, item.name, item.subsystem));
+            } else if (item.type === "package") {
+                const pkg = new Package(item.name);
+                this.tasks.push(pkg);
+                item.tasks.forEach(taskData => {
+                    const task = new Task(taskData.id, taskData.name, taskData.subsystem, pkg.id);
+                    pkg.addTask(task);
+                });
+            }
+        })
         return this.tasks;
     }
 
-    getPackages() {
-        return this.packages;
-    }
-
-    getSubsystems() {
-        return this.subSystems;
+    async getSubsystems() {
+        return this.parseSubsystems(await this.connector.getSubsystems());
     }
 
     parseSubsystems(data) {

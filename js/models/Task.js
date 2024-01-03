@@ -1,8 +1,7 @@
 class Task {
-    constructor(id, name, subsystem, packageId) {
-        this.id = id;
+    constructor(UID, name, subsystem, packageId) {
+        this.UID = UID;
         this.name = name;
         this.subsystem = subsystem;
-        this.packageId = packageId;
     }
 }

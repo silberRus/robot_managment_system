@@ -45,6 +45,10 @@ class ConnectorAPI {
         return this.makeRequest('robot/' + robot.id, 'POST', robot);
     }
 
+    async getTasks() {
+        return this.makeRequest('tasks');
+    }
+
     getSubsystems() {
         return this.makeRequest('subsystems');
     }

@@ -1,8 +1,7 @@
 class Package {
-    constructor(id, name) {
-        this.id = id;
+    constructor(name) {
         this.name = name;
-        this.tasks = []; // список задач, принадлежащих этому пакету
+        this.tasks = [];
     }
 
     addTask(task) {
