@@ -14,7 +14,7 @@ class RobotView {
     `;
 
         robotElement.querySelector('.delete-robot').addEventListener('click', () => {
-            this.deleteRobot(robot.id);
+            this.deleteRobot(robot);
         });
 
         robotElement.querySelector('.select-subsystems').addEventListener('click', () => {
@@ -137,8 +137,8 @@ class RobotView {
         });
     }
 
-    deleteRobot(id) {
-        const event = new CustomEvent('deleteRobot', { detail: id });
+    deleteRobot(robot) {
+        const event = new CustomEvent('deleteRobot', { detail: robot });
         document.dispatchEvent(event);
     }
 

@@ -7,7 +7,7 @@ class ConnectorAPI {
         this.subsystems = [];
     }
 
-    async makeRequest(endpoint, method = 'GET', data = null) {
+    async makeRequest(endpoint, method = 'GET', data = null, returnJson = true) {
         const headers = {
             'Authorization': this.basicAuth,
             'Content-Type': 'application/json'
@@ -24,9 +24,9 @@ class ConnectorAPI {
 
         const response = await fetch(this.baseURL + endpoint, options);
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status} body: ${await response.text()}`);
         }
-        return await response.json();
+        return  returnJson ? await response.json() : true;
     }
 
     async getRobots() {
@@ -37,12 +37,12 @@ class ConnectorAPI {
         return this.makeRequest('robots', 'POST', robot);
     }
 
-    async deleteRobot(id) {
-        return this.makeRequest('robots/' + id, 'DELETE');
+    async deleteRobot(robot) {
+        return this.makeRequest('robot/' + robot.name, 'DELETE', null, false);
     }
 
     async changeRobot(robot) {
-        return this.makeRequest('robots/' + robot.id, 'POST', robot);
+        return this.makeRequest('robot/' + robot.id, 'POST', robot);
     }
 
     getSubsystems() {

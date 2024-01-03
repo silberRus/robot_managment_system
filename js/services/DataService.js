@@ -30,21 +30,25 @@ class DataService {
         });
     }
 
-    async deleteRobot(id) {
-        await this.connector.deleteRobot(id);
+    async deleteRobot(robot) {
+        await this.connector.deleteRobot(robot);
     }
 
     addRobot = async robot => {
-        await this.robots.addRobot(robot);
+        await this.connector.addRobot(robot);
     };
 
     async getRobots() {
-        this.robots = JSON.parse(await this.connector.getRobots());
+        const r = await this.connector.getRobots();
+        this.robots = [];
+        for (let i = 0; i < r.length; i++) {
+            this.robots.push(new Robot(r[i].name, r[i].subsystems));
+        }
         return this.robots;
     }
 
     updateRobot(updatedRobot) {
-        const index = this.robots.findIndex(robot => robot.id === updatedRobot.id);
+        const index = this.robots.findIndex(robot => robot.name === updatedRobot.name);
         if (index !== -1) {
             this.robots[index] = updatedRobot;
         }

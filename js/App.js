@@ -8,9 +8,15 @@ class App {
         this.subsystemView = new SubsystemView();
 
         document.addEventListener('deleteRobot', (event) => {
-            this.dataService.deleteRobot(event.detail);
-            this.dataService.getRobots().then(r => this.renderRobots(r));
+            this.dataService.deleteRobot(event.detail).then(r => {
+                this.updateView();
+            });
         });
+    }
+
+    updateView() {
+        this.dataService.getRobots().then(r => this.renderRobots(r));
+        this.dataService.getTasks().filter(t => this.renderPackagesAndTasks(t));
     }
 
     renderRobots(robots) {
@@ -29,16 +35,15 @@ class App {
         });
     }
 
-    renderPackagesAndTasks() {
+    renderPackagesAndTasks(PackagesAndTasks) {
         const packagesContainer = document.getElementById('packages');
         const standaloneTasks = this.dataService.getTasks().filter(task => !task.packageId);
-        standaloneTasks.forEach(task => {
-            packagesContainer.appendChild(this.taskView.render(task));
-        });
-
-        const packages = this.dataService.getPackages();
-        packages.forEach(pkg => {
-            packagesContainer.appendChild(this.packageView.render(pkg));
+        PackagesAndTasks.forEach(t => {
+            if (t.type === "task") {
+                packagesContainer.appendChild(this.taskView.render(t));
+            } else if (t.type === "package") {
+                packagesContainer.appendChild(this.packageView.render(t));
+            }
         });
     }
 
@@ -92,13 +97,9 @@ class App {
         document.getElementById('addRobot').addEventListener('click', this.addRobot.bind(this));
     }
 
-    addRobot() {
-        const robotName = "robot " + this.dataService.robots.length + 1;
-        if (robotName) {
-            this.dataService.addRobot(new Robot(Date.now(), robotName, []));
-            this.renderRobots();
-        }
-    }
+    addRobot = () => {
+        this.dataService.addRobot().then(() => this.updateView());
+    };
 }
 
 // Запускаем приложение
