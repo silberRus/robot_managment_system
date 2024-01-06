@@ -1,19 +1,16 @@
 class App {
     constructor() {
         this.dataService = new DataService();
-        this.taskView = new TaskView();
-        this.packageView = new PackageView();
-        this.robotView = new RobotView(this.dataService);
+        this.taskView = new TaskView(this.dataService);
+        this.packageView = new PackageView(this.dataService);
+        this.robotView = new RobotView(this);
         this.subsystemView = new SubsystemView();
-
-        document.addEventListener('deleteRobot', (event) => {
-            this.dataService.deleteRobot(event.detail).then(r => {
-                this.updateView();
-            });
-        });
     }
 
+    mainToggle = () => document.getElementById('toggle-system');
+
     updateView() {
+        this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getRobots().then(r => this.renderRobots(r));
         this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
     }
@@ -24,6 +21,10 @@ class App {
         robots.forEach(robot => {
             robotsContainer.appendChild(this.robotView.render(robot));
         });
+    }
+
+    renderSettings(settings) {
+        this.mainToggle.checked = this.mainToggle().isActive;
     }
 
     renderSubsystems(subsystems) {
@@ -46,59 +47,47 @@ class App {
         });
     }
 
-    renderItems() {
-        const itemsContainer = document.getElementById('packages');
-        const items = this.dataService.getItems();
-        items.forEach(item => {
-            if (item instanceof Task) {
-                itemsContainer.appendChild(this.taskView.render(item));
-            } else if (item instanceof Package) {
-                itemsContainer.appendChild(this.packageView.render(item));
+    addEventListeners() {
+        const addRobotButton = document.getElementById('addRobot'); // Сохраняем ссылку на кнопку
+        addRobotButton.addEventListener('click', async () => {
+            addRobotButton.classList.add('working-progress');
+            addRobotButton.disabled = true;
+            try {
+                await this.dataService.addRobot();
+                this.updateView();
+            } catch (error) {
+                console.error('Произошла ошибка при добавлении робота', error);
+            } finally {
+                addRobotButton.classList.remove('working-progress');
+                addRobotButton.disabled = false;
             }
         });
 
-        itemsContainer.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.id);
+        this.mainToggle().addEventListener('change',(event) => {
+            this.dataService.setSettings({isActive: this.mainToggle().checked}).then(() => {
+                this.updateView();
+            });
         });
 
-        itemsContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();  // Разрешить сброс
+        document.addEventListener('deleteRobot', (event) => {
+            event.target.textContent = 'Удаление...';
+            this.dataService.deleteRobot(event.detail).then(r => {
+                this.updateView();
+            });
         });
 
-        itemsContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-
-            const draggedId = e.dataTransfer.getData('text/plain');
-            const draggedElement = document.getElementById(draggedId);
-            const dropTarget = e.target.closest('.task, .package');  // Предполагая, что у вас есть эти классы
-
-            if (dropTarget && dropTarget !== draggedElement) {
-                const siblings = Array.from(itemsContainer.children);
-                const draggedIndex = siblings.indexOf(draggedElement);
-                const dropTargetIndex = siblings.indexOf(dropTarget);
-
-                // Проверка, находится ли перетаскиваемый элемент внутри пакета и является ли целью тот же пакет
-                if (draggedElement.classList.contains('package') && dropTarget.classList.contains('package') && draggedElement.dataset.packageId === dropTarget.dataset.packageId) {
-                    itemsContainer.insertBefore(draggedElement, draggedIndex < dropTargetIndex ? dropTarget.nextSibling : dropTarget);
-                } else if (!draggedElement.classList.contains('package') && !dropTarget.classList.contains('package')) {
-                    itemsContainer.insertBefore(draggedElement, draggedIndex < dropTargetIndex ? dropTarget.nextSibling : dropTarget);
-                }
-            }
-        });
+        document.addEventListener('updateView', () => {
+            this.updateView();
+        })
     }
 
     init() {
         this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
+        this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getRobots().then(r => this.renderRobots(r));
         this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
-        this.renderItems();
-
-        document.getElementById('addRobot').addEventListener('click', this.addRobot.bind(this));
+        this.addEventListeners();
     }
-
-    addRobot = () => {
-        this.dataService.addRobot().then(() => this.updateView());
-    };
 }
 
 // Запускаем приложение

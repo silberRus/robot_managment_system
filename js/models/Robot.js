@@ -1,5 +1,5 @@
 class Robot {
-    constructor(name, subsystems = []) {
+    constructor(name, subsystems = [], ) {
         this.id = this.generateIdFromName(name);
         this.name = name;
         this.subsystems = subsystems;

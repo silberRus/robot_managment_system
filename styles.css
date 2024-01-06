@@ -1,97 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin: 0;
+    color: #333;
+}
 
 #header {
-    width: 100%;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
 #main {
     display: flex;
+    gap: 20px; /* Добавляет пространство между sidebar и content */
 }
 
 #sidebar {
-    flex: 1;
-    max-width: 200px;
-    border-right: 1px solid #ccc;
-    padding-right: 20px;
-    margin-right: 20px;
+    width: 200px; /* Фиксированная ширина для sidebar */
 }
 
 #content {
-    flex: 3;
+    flex-grow: 1; /* content занимает все доступное пространство */
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
-}
-
-#robots, #subsystems, #packages {
-    margin-bottom: 30px;
+.robot, .subsystem, .package {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease; /* Плавное изменение тени */
 }
 
 #robots {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;  /* Добавляет промежуток между роботами */
+    align-items: center;
+    overflow-x: auto; /* Позволяет прокручивать роботов горизонтально, если они не помещаются */
+    flex-grow: 1; /* Роботы займут всё доступное пространство */
+    margin-left: 10px; /* Отступ слева от кнопки */
 }
 
-#subsystems {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+.robot:hover, .subsystem:hover, .package:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Тень при наведении */
 }
 
-#packages {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex-wrap: wrap;
+.robot, .subsystem {
+    text-align: center;
+    margin-bottom: 10px; /* Отступ снизу для роботов и подсистем */
 }
 
-.robot, .subsystem, .package, .task {
+.robot-name, .subsystem-name {
+    display: block; /* Имена отображаются на отдельной строке */
+    font-weight: bold;
+    margin-bottom: 5px; /* Отступ после имени */
+}
+
+.select-subsystems, .delete-robot {
+    margin-top: 5px; /* Отступ сверху для кнопок */
+    display: block; /* Кнопки занимают всю ширину контейнера */
+}
+
+button {
+    background-color: #f8db8d;
+    border: none;
     padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
 }
 
-.robot {
-    flex: 1;
-    text-align: center;
-    max-width: 150px;
+button:hover {
+    background-color: #f1ca6e; /* Цвет фона при наведении */
 }
 
-.subsystem {
-    flex: 1;
-    text-align: center;
-    max-width: 150px;
-    white-space: normal;
-    word-wrap: break-word;
-}
-.subsystem-checkbox-container {
-    margin-left: 20px;
-    white-space: normal;
-    word-wrap: break-word;
-}
-
-.package {
-    width: 100%;
-}
-
-.task {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.subsystem {
-    margin-left: 20px;
-}
+/* ------------------- Стили для модального окна -----------------*/
 
 .modal {
     position: fixed;
@@ -108,21 +93,124 @@ body {
     gap: 10px;
 }
 
-/* Кнопки */
-button {
-    background-color: #f8db8d;
-    color: #000000;
-    border-color: #fae366;
-    padding: 0.5em 1em;
+/* ------------------- Стили для тумблера -----------------*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 120px; /* ширина кнопки */
+    height: 50px; /* высота кнопки */
+    margin: 10px;
+    /*position: relative; /* Для позиционирования подсказки */
+}
+
+/* Скрытие стандартного чекбокса */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Стили для слайдера/тумблера */
+.slider {
+    position: absolute;
     cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* серый цвет фона для выключенного состояния */
+    transition: .4s;
+    border-radius: 34px; /* закругленные углы */
 }
 
-/* Фон */
-body {
-    background-color: #d3d7cc;
+.slider:before {
+    position: absolute;
+    content: "выкл";
+    color: #aaa; /* более темный серый цвет текста для надписи "Остановлено" */
+    display: block;
+    width: 120px; /* ширина должна совпадать с шириной .slider */
+    height: 50px; /* высота должна совпадать с высотой .slider */
+    line-height: 50px; /* центрирование текста по вертикали */
+    text-align: center; /* центрирование текста по горизонтали */
+    background-color: #ccc; /* серый цвет фона для выключенного состояния */
+    transition: .4s;
+    border-radius: 34px; /* закругленные углы */
 }
 
-/* Анимация */
-.animated {
-    animation: fadeIn 1s ease-out;
+/* Стиль для чекбокса, когда он в состоянии :checked */
+input:checked + .slider {
+    background-color: #4caf50; /* зеленый цвет фона для включенного состояния */
 }
+
+input:checked + .slider:before {
+    content: "ВКЛ";
+    background-color: #4caf50; /* зеленый цвет фона для текста "ВКЛ" */
+    color: white;
+}
+
+/* Добавление эффектов при фокусе */
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+/* Стили для подсказки */
+.switch .tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px; /* Отцентровать подсказку */
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+/* Стиль для стрелки подсказки */
+.switch .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Показываем подсказку при наведении */
+.switch:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Анимация пульсации для индикации процесса */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+}
+
+/* Стили для кнопки, которая находится в процессе */
+.working-progress {
+    animation: pulse 2s infinite;
+}
+
+/* Стили для неактивной кнопки */
+button:disabled {
+    background-color: #ccc; /* Серый фон для неактивной кнопки */
+    cursor: not-allowed;   /* Курсор в виде знака запрета */
+}
+
+
+

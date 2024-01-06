@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Роботы и Задачи</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="js/views/task.css">
 </head>
 <body>
 <div id="header">
+    <div id="Manager">
+        <h3>Отложенные действия</h3>
+        <label class="switch">
+            <input type="checkbox" id="toggle-system" checked>
+            <span class="slider round"></span>
+            <span class="tooltip">Выключатель отложенных действий</span>
+        </label>
+        <button id="addRobot">Добавить робота</button>
+    </div>
     <div id="robots"></div>
-    <button id="addRobot">Добавить робота</button>
 </div>
 <div id="main">
     <div id="sidebar">
@@ -23,6 +32,7 @@
 </div>
 
 <script src="js/services/Connector1CInside.js"></script>
+<script src="js/models/Settings.js"></script>
 <script src="js/models/Task.js"></script>
 <script src="js/models/Package.js"></script>
 <script src="js/models/Robot.js"></script>

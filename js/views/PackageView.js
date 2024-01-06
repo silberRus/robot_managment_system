@@ -1,5 +1,7 @@
 class PackageView {
-    constructor() {}
+    constructor(dataService) {
+        this.connector = dataService;
+    }
 
     render(pkg) {
         const packageElement = document.createElement('div');
@@ -7,7 +9,7 @@ class PackageView {
         packageElement.innerText = pkg.name;
         packageElement.setAttribute('draggable', 'true');
         pkg.tasks.forEach(task => {
-            const taskView = new TaskView();
+            const taskView = new TaskView(this.connector);
             packageElement.appendChild(taskView.render(task));
         });
         return packageElement;

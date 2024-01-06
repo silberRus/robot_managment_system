@@ -1,0 +1,65 @@
+.task {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    cursor: pointer;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
+    gap: 10px; /* Добавляет промежуток между элементами */
+}
+
+.toggle-details-icon {
+    cursor: pointer;
+    user-select: none; /* Предотвращаем выделение символа при двойном клике */
+}
+
+.task-subsystem, .task-name, .task-status {
+    margin-right: 5px;
+}
+
+.task-details {
+    display: none; /* Скрываем детали по умолчанию */
+    flex-direction: column; /* Содержимое деталей вертикально */
+    border-top: 1px solid #eee;
+    padding: 10px;
+    background-color: #f8f8f8; /* Светлый фон для деталей */
+    max-height: 200px; /* Ограничиваем максимальную высоту */
+    overflow-y: auto; /* Добавляем прокрутку если содержимое слишком длинное */
+    width: 100%; /* Занимаем всю доступную ширину */
+}
+
+.task-error, .task-text {
+    margin-top: 10px;
+    padding: 5px;
+    border-top: 1px solid #eee;
+    font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт для кода */
+}
+
+.task-error {
+    color: #e74c3c; /* Красный цвет для текста ошибок */
+}
+
+.task-text {
+    color: #2c3e50; /* Тёмно-синий цвет для текста задачи */
+}
+
+.loader {
+    border: 4px solid rgba(0, 0, 0, .1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    color: #e74c3c;
+}
+

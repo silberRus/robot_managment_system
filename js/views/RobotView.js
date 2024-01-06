@@ -1,14 +1,16 @@
 class RobotView {
-    constructor(dataService) {
-        this.dataService = dataService;
+    constructor(app) {
+        this.dataService = app.dataService;
+        this.app = app;
     }
 
     render(robot) {
         const robotElement = document.createElement('div');
+        const idSubsystems = robot.subsystems.map(s => s.id).join(", ");
         robotElement.className = 'robot';
         robotElement.innerHTML = `
         <span class="robot-name">${robot.name}</span>
-        <span class="robot-subsystems">${robot.subsystems.join(", ") || "Все подсистемы"}</span>
+        <span class="robot-subsystems">${robot.subsystems.join(", ") || "*"}</span>
         <button class="select-subsystems" data-id="${robot.id}">Выбрать подсистемы</button>
         <button class="delete-robot" data-id="${robot.id}">Удалить</button>
     `;
@@ -31,6 +33,7 @@ class RobotView {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = 'subsystem-' + subsystem.id;
+        console.log("robot.subsystems: ", robot.subsystems);
         checkbox.checked = robot.subsystems.includes(subsystem.name);
 
         const label = document.createElement('label');
@@ -72,7 +75,7 @@ class RobotView {
 
     selectSubsystems(robot) {
         const modal = this.createModal();
-        const subsystemsList = this.dataService.getSubsystems();
+        const subsystemsList = this.dataService.getSubsystemsCash();
         this.appendSubsystemCheckboxes(modal, subsystemsList, robot);
 
         const saveButton = this.createSaveButton(() => {
@@ -123,19 +126,9 @@ class RobotView {
     saveSelectedSubsystems(robot, checkedSubsystems, modal) {
         robot.subsystems = checkedSubsystems;
         this.dataService.updateRobot(robot);
-        this.updateView();
         modal.remove();
     }
 
-
-    updateView() {
-        const robotsContainer = document.getElementById('robots');
-        robotsContainer.innerHTML = ''; // Очищаем список роботов
-        const robots = this.dataService.getRobots();
-        robots.forEach(robot => {
-            robotsContainer.appendChild(this.render(robot));
-        });
-    }
 
     deleteRobot(robot) {
         const event = new CustomEvent('deleteRobot', { detail: robot });

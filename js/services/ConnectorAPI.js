@@ -49,6 +49,14 @@ class ConnectorAPI {
         return this.makeRequest('tasks');
     }
 
+    async getSettings() {
+        return this.makeRequest('settings');
+    }
+
+    async setSettings(settings) {
+        return this.makeRequest('settings', 'POST', settings, false);
+    }
+
     getSubsystems() {
         return this.makeRequest('subsystems');
     }

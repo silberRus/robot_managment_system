@@ -1,7 +1,12 @@
 class Task {
-    constructor(UID, name, subsystem, packageId) {
-        this.UID = UID;
-        this.name = name;
-        this.subsystem = subsystem;
+    constructor(taskAPI = {}) {
+        this.UID = taskAPI.UID || '';
+        this.name = taskAPI.name || '';
+        this.subsystem = taskAPI.subsystem || '';
+        this.status = taskAPI.status || 'new';
+        this.robot = taskAPI.robot || null;
+        this.errorDescription = taskAPI.errorDescription || '';
+        this.text = taskAPI.text || '';
+        this.executionAttempts = taskAPI.executionAttempts || 0;
     }
 }

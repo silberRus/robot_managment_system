@@ -2,15 +2,17 @@
 class DataService {
     constructor() {
 
-        this.connector = new ConnectorAPI();
-        //this.connector = new ConnectorMock();
+        this.subSystems = [];
+        this.robots = [];
+        this.tasks = [];
+
+        //this.connector = new ConnectorAPI();
+        this.connector = new ConnectorMock();
         //this.connector = new Connector1CInside();
 
         this.connector.getSubsystems().then(data => {
             this.subSystems = this.parseSubsystems(data);
         })
-
-        this.robots = [];
     }
 
     async deleteRobot(robot) {
@@ -30,10 +32,12 @@ class DataService {
         return this.robots;
     }
 
-    updateRobot(updatedRobot) {
+    async updateRobot(updatedRobot) {
         const index = this.robots.findIndex(robot => robot.name === updatedRobot.name);
         if (index !== -1) {
             this.robots[index] = updatedRobot;
+            await this.connector.updateRobot(updatedRobot);
+            document.dispatchEvent(new CustomEvent('updateView'));
         }
     }
 
@@ -46,21 +50,47 @@ class DataService {
         this.tasks = [];
         tasks.forEach(item => {
             if (item.type === "task") {
-                this.tasks.push(new Task(item.UID, item.name, item.subsystem));
+                this.tasks.push(new Task(item)); // Убедитесь, что item действительно содержит данные задачи
             } else if (item.type === "package") {
                 const pkg = new Package(item.name);
                 this.tasks.push(pkg);
                 item.tasks.forEach(taskData => {
-                    const task = new Task(taskData.id, taskData.name, taskData.subsystem, pkg.id);
+                    const task = new Task(taskData); // Убедитесь, что taskData содержит нужные данные
                     pkg.addTask(task);
                 });
             }
-        })
+        });
         return this.tasks;
     }
 
+    async updateTaskDetail(task) {
+        if (task.text.length === 0) {
+            const updatedTaskData = await this.connector.getTask(task.UID);
+            for (const key in updatedTaskData) {
+                if (updatedTaskData.hasOwnProperty(key)) {
+                    task[key] = updatedTaskData[key];
+                }
+            }
+        }
+    }
+
+    async getSettings() {
+        const s = await this.connector.getSettings();
+        return new Settings(s.isActive);
+    }
+
+    async setSettings(settings) {
+        await this.connector.setSettings(settings);
+    }
+
     async getSubsystems() {
-        return this.parseSubsystems(await this.connector.getSubsystems());
+        const subSystem = await this.connector.getSubsystems();
+        this.subSystems = this.parseSubsystems(subSystem);
+        return this.subSystems;
+    }
+
+    getSubsystemsCash() {
+        return this.subSystems;
     }
 
     parseSubsystems(data) {
