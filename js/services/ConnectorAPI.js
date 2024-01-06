@@ -49,6 +49,10 @@ class ConnectorAPI {
         return this.makeRequest('tasks');
     }
 
+    async getTask(UID) {
+        return this.makeRequest('tasks/' + UID);
+    }
+
     async getSettings() {
         return this.makeRequest('settings');
     }

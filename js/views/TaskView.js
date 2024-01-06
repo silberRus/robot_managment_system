@@ -11,6 +11,7 @@ class TaskView {
         toggleDetailsIcon.innerHTML = '&#x25BC;'; // HTML-код стрелки вниз
         toggleDetailsIcon.classList.add('toggle-details-icon');
 
+        console.log(task)
         const subsystemElement = document.createElement('span');
         subsystemElement.classList.add('task-subsystem');
         subsystemElement.textContent = `Подсистема: ${task.subsystem}`;

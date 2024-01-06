@@ -6,13 +6,15 @@ class RobotView {
 
     render(robot) {
         const robotElement = document.createElement('div');
-        const idSubsystems = robot.subsystems.map(s => s.id).join(", ");
         robotElement.className = 'robot';
         robotElement.innerHTML = `
-        <span class="robot-name">${robot.name}</span>
-        <span class="robot-subsystems">${robot.subsystems.join(", ") || "*"}</span>
-        <button class="select-subsystems" data-id="${robot.id}">Выбрать подсистемы</button>
-        <button class="delete-robot" data-id="${robot.id}">Удалить</button>
+        <div class="robot-name">${robot.name}</div>
+        <button class="select-subsystems" data-id="${robot.id}">...</button>
+        <div class="robot-subsystems">${robot.subsystems.join(", ") || "все подсистемы"}</div>
+        <div class="robot-actions">
+            
+            <button class="delete-robot" data-id="${robot.id}">Удалить</button>
+        </div>
     `;
 
         robotElement.querySelector('.delete-robot').addEventListener('click', () => {
@@ -33,8 +35,7 @@ class RobotView {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = 'subsystem-' + subsystem.id;
-        console.log("robot.subsystems: ", robot.subsystems);
-        checkbox.checked = robot.subsystems.includes(subsystem.name);
+        checkbox.checked = robot.subsystems.includes(subsystem.id); // Это должно работать для любого уровня подсистемы
 
         const label = document.createElement('label');
         label.htmlFor = 'subsystem-' + subsystem.id;
@@ -55,7 +56,10 @@ class RobotView {
             const childrenContainer = document.createElement('div');
             childrenContainer.className = 'children';
             subsystem.children.forEach(child => {
-                childrenContainer.appendChild(this.renderSubsystemCheckbox(child, robot));
+                const childCheckbox = this.renderSubsystemCheckbox(child, robot);
+                childrenContainer.appendChild(childCheckbox);
+                // Устанавливаем состояние чекбокса на основе сохраненных подсистем
+                childCheckbox.querySelector('input[type="checkbox"]').checked = robot.subsystems.includes(child.id);
             });
             container.appendChild(childrenContainer);
         }
@@ -74,6 +78,7 @@ class RobotView {
     }
 
     selectSubsystems(robot) {
+        this.openModal(); // Открыть модальное окно и затемнить фон
         const modal = this.createModal();
         const subsystemsList = this.dataService.getSubsystemsCash();
         this.appendSubsystemCheckboxes(modal, subsystemsList, robot);
@@ -84,6 +89,26 @@ class RobotView {
         });
         modal.appendChild(saveButton);
         document.body.appendChild(modal);
+    }
+
+    saveSelectedSubsystems(robot, checkedSubsystemsIds, modal) {
+        robot.subsystems = checkedSubsystemsIds;
+        this.dataService.updateRobot(robot);
+        this.closeModal(); // Закрыть модальное окно и убрать затемнение
+    }
+
+    openModal() {
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        document.body.appendChild(overlay);
+        overlay.style.display = 'block';
+    }
+
+    closeModal() {
+        const overlay = document.querySelector('.overlay');
+        if (overlay) overlay.remove();
+        const modal = document.querySelector('.modal');
+        if (modal) modal.remove();
     }
 
     createModal() {
@@ -106,27 +131,23 @@ class RobotView {
     }
 
     getCheckedSubsystems(modal, subsystemsList) {
-        const getAllSubsystems = (subs, list = []) => {
-            subs.forEach(sub => {
-                list.push(sub);
-                if (sub.children) {
-                    getAllSubsystems(sub.children, list);
+        const checkedSubsystemsIds = [];
+
+        const addCheckedSubsystems = (subsystems, list) => {
+            subsystems.forEach(sub => {
+                const checkbox = modal.querySelector('#subsystem-' + sub.id);
+                if (checkbox && checkbox.checked) {
+                    list.push(sub.id); // Сохраняем ID подсистемы
+                }
+                // Рекурсивно проверяем дочерние элементы независимо от состояния родителя
+                if (sub.children && sub.children.length > 0) {
+                    addCheckedSubsystems(sub.children, list);
                 }
             });
-            return list;
         };
 
-        const allSubsystems = getAllSubsystems(subsystemsList);
-        return allSubsystems.filter(sub => {
-            const checkbox = modal.querySelector('#subsystem-' + sub.id);
-            return checkbox && checkbox.checked;
-        }).map(sub => sub.name);
-    }
-
-    saveSelectedSubsystems(robot, checkedSubsystems, modal) {
-        robot.subsystems = checkedSubsystems;
-        this.dataService.updateRobot(robot);
-        modal.remove();
+        addCheckedSubsystems(subsystemsList, checkedSubsystemsIds);
+        return checkedSubsystemsIds; // Возвращаем массив ID подсистем
     }
 
 
@@ -134,5 +155,4 @@ class RobotView {
         const event = new CustomEvent('deleteRobot', { detail: robot });
         document.dispatchEvent(event);
     }
-
 }

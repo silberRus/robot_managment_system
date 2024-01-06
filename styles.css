@@ -43,7 +43,7 @@ body {
     margin-left: 10px; /* Отступ слева от кнопки */
 }
 
-.robot:hover, .subsystem:hover, .package:hover {
+.robot:hover, .subsystem:hover, .package:hover, .task:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Тень при наведении */
 }
 
@@ -78,6 +78,16 @@ button:hover {
 
 /* ------------------- Стили для модального окна -----------------*/
 
+.subsystem-checkbox-container {
+    padding-left: 0; /* Нет отступа для корневых подсистем */
+}
+
+.subsystem-checkbox-container .children {
+    padding-left: 20px; /* Отступ для подчиненных подсистем */
+    border-left: 1px solid #eee; /* Визуальное отделение уровней иерархии */
+}
+
+/* Стили для модального окна остаются без изменений */
 .modal {
     position: fixed;
     top: 50%;
@@ -91,6 +101,17 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    z-index: 999; /* Чтобы оверлей был под модальным окном */
 }
 
 /* ------------------- Стили для тумблера -----------------*/

@@ -180,24 +180,28 @@ class ConnectorMock {
                 "tasks": [
                     {
                         "UID": "9a732a54-f173-4644-a260-4ec5280754e0",
+                        "subsystem": "tM",
                         "name": "Расчет суммовых показателей",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "a606a1c3-fe37-4cfa-b775-6ff99836ff54",
+                        "subsystem": "tM",
                         "name": "Расчет итогов",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "81900a3e-1f57-43aa-8b85-fd3b41019716",
+                        "subsystem": "tM",
                         "name": "Запись документа",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "13a520a5-dc41-4675-b606-406bda7fae49",
+                        "subsystem": "tM",
                         "name": "Расчет итогов",
                         "type": "task",
                         "tasks": []
@@ -211,18 +215,21 @@ class ConnectorMock {
                 "tasks": [
                     {
                         "UID": "6d8bf7de-a4f1-4489-a213-cd72cafbac7e",
+                        "subsystem": "tM",
                         "name": "Расчет суммовых показателей",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "e0d2d928-fb4d-4ddb-b05c-f44e4f4d109e",
+                        "subsystem": "tM",
                         "name": "Расчет итогов",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "8a0669b4-7795-44aa-8498-8d7f0d82937c",
+                        "subsystem": "tM",
                         "name": "Проведение документа",
                         "type": "task",
                         "tasks": []
@@ -237,37 +244,43 @@ class ConnectorMock {
                     {
                         "UID": "cb598028-95c0-4b7b-a582-901c01b0612e",
                         "name": "Расчет суммовых показателей",
+                        "subsystem": "tM",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "c123d2b6-bd07-42d8-a144-1a5004ca9447",
                         "name": "Проведение документа",
+                        "subsystem": "tM",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "66f8a069-08f2-4505-9d65-90355a79f8b5",
                         "name": "Расчет итогов",
+                        "subsystem": "tM",
                         "type": "task",
                         "tasks": []
                     }
                 ]
             },
 
-            //     this.UID = UID;
-            // this.name = name;
-            // this.subsystem = subsystem;
-            // this.status = "new";
-            // this.robot = null;
-            // this.errorDescription = "";
-            // this.text = "";
-            // this.executionAttempts = 0;
+            {
+                "UID": "87569315-b98f-4535-980e-7e2649b9dd43",
+                "name": "+++ Расчет итогов ++++",
+                "subsystem": "ТС",
+                "type": "task",
+                "status": "wait",
+                "robot": "",
+                "errorDescription": "",
+                "text": "ЭтотОбъект = XMLЗначение(Тип(\"ДокументСсылка.МаршрутныйЛист\"), \"66eb054d-bda7-11ed-bde8-b47af15e6e0c\").ПолучитьОбъект();\n\nЭтотОбъект.ДополнительныеСвойства.Вставить(\"ВыполнитьОбработчики\", Ложь);\nЭтотОбъект.РассчитатьИтоги_Фоново();\nЭтотОбъект.Записать();",
+                "executionAttempts": 0
+            },
             {
                 "UID": "70bfa710-cf0c-4959-a85b-43772ef06271",
                 "name": "Одинокое задание",
                 "type": "task",
-                "subsystem": "ТС",
+                "subsystem": "wA",
                 "robot":"R2D2",
                 "status": "working",
                 "text": `
@@ -296,7 +309,7 @@ class ConnectorMock {
                 "UID": "22569315-b98f-4535-980e-7e2649b9dd43",
                 "name": "Задание с ошибкой",
                 "type": "task",
-                "subsystem": "ТС",
+                "subsystem": "wS",
                 "robot":"R2D2",
                 "status": "working",
                 "text": `
@@ -314,8 +327,6 @@ class ConnectorMock {
 
 // Основной блок
 c = 3
-
-
                 `,
                 "errorDescription": " Это ошибка емое ОписаниеОшибки"
             },
@@ -327,11 +338,13 @@ c = 3
                     {
                         "UID": "0fe1d5e2-c504-402b-9a62-e9489b6d9652",
                         "name": "Задание пакета 2",
+                        "subsystem": "xR",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "4816382a-b099-4087-b443-3ecc8f8265d0",
+                        "subsystem": "xR",
                         "name": "Задание пакета 1",
                         "type": "task",
                         "tasks": []
