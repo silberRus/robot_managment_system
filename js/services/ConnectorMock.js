@@ -74,33 +74,33 @@ class ConnectorMock {
                 "children": [
                     {
                         "id": "sA",
-                        "name": "Продажи.Аптека"
+                        "name": "Аптека"
                     },
                     {
                         "id": "sC",
-                        "name": "Продажи.ПодборТоваров"
+                        "name": "Подбор товаров"
                     },
                     {
                         "id": "s7",
-                        "name": "Продажи.Схема_702"
+                        "name": "Схема 702"
                     },
                     {
                         "id": "sM",
-                        "name": "Продажи.Маркировка"
+                        "name": "Маркировка"
                     },
                     {
                         "id": "sV",
-                        "name": "Продажи.ВидыРасчетов"
+                        "name": "Виды расчетов"
                     }
                 ]
             },
             {
                 "id": "b",
-                "name": "БюджетныеПродажи",
+                "name": "Бюджетные продажи",
                 "children": [
                     {
                         "id": "bA",
-                        "name": "БюджетныеПродажи.АктуализацияСтатусовРА"
+                        "name": "Актуализация статусов РА"
                     }
                 ]
             }
@@ -362,6 +362,14 @@ c = 3
         const index = this.robots.findIndex(robot => robot.name === updatedRobot.name);
         if (index !== -1) {
             this.robots[index] = updatedRobot;
+        }
+    }
+
+    async deleteRobot(robot) {
+        await sleep(this.pauseMSec);
+        const index = this.robots.findIndex(r => r.name === robot.name);
+        if (index !== -1) {
+            this.robots.splice(index, 1);
         }
     }
 

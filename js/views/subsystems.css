@@ -1,0 +1,29 @@
+.subsystem {
+    /* Ваши текущие стили для подсистемы */
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    user-select: none; /* не позволяет выделять текст при двойном клике */
+}
+
+.subsystem.selected {
+    /* Стили для выбранной подсистемы */
+    background-color: #deffcd; /* или другой цвет, который вы предпочитаете */
+    border-color: #c8c8c8;
+}
+
+.children {
+    margin-left: 20px;
+}
+
+/* Стили для дочерних подсистем */
+.children .subsystem {
+    border-left: 2px solid #e8e8e8; /* или другой цвет, который вы предпочитаете */
+}
+
+/* Стили для подсистем, когда они не выбраны */
+.children .subsystem:not(.selected) {
+    background-color: #fff;
+    border-color: #ddd;
+}

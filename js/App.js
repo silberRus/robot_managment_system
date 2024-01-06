@@ -69,12 +69,12 @@ class App {
             });
         });
 
-        document.addEventListener('deleteRobot', (event) => {
-            event.target.textContent = 'Удаление...';
-            this.dataService.deleteRobot(event.detail).then(r => {
-                this.updateView();
-            });
-        });
+        // document.addEventListener('deleteRobot', (event) => {
+        //     event.target.textContent = 'Удаление...';
+        //     this.dataService.deleteRobot(event.detail).then(r => {
+        //         this.updateView();
+        //     });
+        // });
 
         document.addEventListener('updateView', () => {
             this.updateView();

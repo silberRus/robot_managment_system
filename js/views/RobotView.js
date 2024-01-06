@@ -5,24 +5,31 @@ class RobotView {
     }
 
     render(robot) {
+        const idDelButton = "delete-robot-" + robot.id; // Уникальный ID для кнопки удаления
+
         const robotElement = document.createElement('div');
         robotElement.className = 'robot';
         robotElement.innerHTML = `
         <div class="robot-name">${robot.name}</div>
-        <button class="select-subsystems" data-id="${robot.id}">...</button>
-        <div class="robot-subsystems">${robot.subsystems.join(", ") || "все подсистемы"}</div>
-        <div class="robot-actions">
-            
-            <button class="delete-robot" data-id="${robot.id}">Удалить</button>
-        </div>
-    `;
+        <div class="robot-subsystems-list" title="Выбрать подсистемы"><a href="#">${robot.subsystems.join(", ") || "Все подсистемы"}</a></div>
+        <button class="delete-robot" data-id="${robot.id}" id="${idDelButton}" title="Удалить робота">&times;</button>        
+        `;
 
-        robotElement.querySelector('.delete-robot').addEventListener('click', () => {
-            this.deleteRobot(robot);
+        robotElement.querySelector('.robot-subsystems-list').addEventListener('click', () => {
+            this.selectSubsystems(robot);
         });
 
-        robotElement.querySelector('.select-subsystems').addEventListener('click', () => {
-            this.selectSubsystems(robot);
+        const deleteRobotButton = robotElement.querySelector('#' + idDelButton);
+        deleteRobotButton.addEventListener('click', () => {
+            deleteRobotButton.classList.add('working-progress');
+            deleteRobotButton.disabled = true;
+            this.dataService.deleteRobot(robot).then(() => {
+                this.app.updateView(); // Вызов метода обновления представления
+            }).catch(error => {
+                console.error('Ошибка при удалении робота', error);
+                deleteRobotButton.classList.remove('working-progress');
+                deleteRobotButton.disabled = false;
+            });
         });
 
         return robotElement;
@@ -125,7 +132,7 @@ class RobotView {
 
     createSaveButton(onClickHandler) {
         const saveButton = document.createElement('button');
-        saveButton.innerText = 'Сохранить';
+        saveButton.innerText = 'Выбрать подсистемы';
         saveButton.addEventListener('click', onClickHandler);
         return saveButton;
     }
@@ -151,8 +158,13 @@ class RobotView {
     }
 
 
-    deleteRobot(robot) {
-        const event = new CustomEvent('deleteRobot', { detail: robot });
-        document.dispatchEvent(event);
+    deleteRobot(robotId) {
+        this.dataService.deleteRobot(robotId).then(() => {
+            // Создаем и диспатчим событие обновления представления
+            const updateViewEvent = new Event('updateView');
+            document.dispatchEvent(updateViewEvent);
+        }).catch(error => {
+            console.error('Ошибка при удалении робота', error);
+        });
     }
 }
