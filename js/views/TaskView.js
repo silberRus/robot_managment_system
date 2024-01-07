@@ -6,6 +6,7 @@ class TaskView {
     render(task) {
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
+        taskElement.classList.add('task-' + task.status);
 
         const toggleDetailsIcon = document.createElement('span');
         toggleDetailsIcon.innerHTML = '&#x25BC;'; // HTML-код стрелки вниз
@@ -13,11 +14,11 @@ class TaskView {
 
         const createDateElement = document.createElement('span');
         createDateElement.classList.add('task-creation-date');
-        createDateElement.textContent = `${MyDate(task.creationDate)} | `;
+        createDateElement.textContent = `${strData(task.creationDate)}`;
 
         const subsystemElement = document.createElement('span');
         subsystemElement.classList.add('task-subsystem');
-        subsystemElement.textContent = `${task.subsystemTitle} | `;
+        subsystemElement.textContent = `${task.subsystemTitle}`;
 
         const taskNameElement = document.createElement('span');
         taskNameElement.classList.add('task-name');

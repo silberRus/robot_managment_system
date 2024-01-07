@@ -10,6 +10,29 @@
     gap: 10px; /* Добавляет промежуток между элементами */
 }
 
+.task-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.task-complete {
+    color: #9da885;
+}
+
+.task-error {
+    color: #5d1c1c;
+}
+
+.task-running {
+    color: #445ea9;
+}
+
+.task-creation-date, .task-subsystem {
+    margin-right: 5px;
+    white-space: nowrap;
+    font: 12px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
 .toggle-details-icon {
     cursor: pointer;
     user-select: none; /* Предотвращаем выделение символа при двойном клике */

@@ -10,9 +10,17 @@ class App {
     mainToggle = () => document.getElementById('toggle-system');
 
     updateView() {
+
+        const tasksContainer = document.getElementById('packages');
+        tasksContainer.innerHTML = '<div class="loader">...</div>';
+
         this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getRobots().then(r => this.renderRobots(r));
-        this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
+
+        this.dataService.getTasks().then(t => {
+            tasksContainer.innerHTML = '';
+            this.renderPackagesAndTasks(t);
+        });
     }
 
     renderRobots(robots) {
@@ -63,6 +71,11 @@ class App {
             }
         });
 
+        const updateTasksButtonElement = document.getElementById('updateTasksButton');
+        updateTasksButtonElement.addEventListener('click', () => {
+            this.updateView();
+        })
+
         this.mainToggle().addEventListener('change',(event) => {
             this.dataService.setSettings({isActive: this.mainToggle().checked}).then(() => {
                 this.updateView();
@@ -97,7 +110,7 @@ class App {
     }
 }
 
-function MyDate(date) {
+function strData(date) {
     return date.toLocaleDateString('ru-RU', {
         year: 'numeric',
         month: 'long',

@@ -337,7 +337,7 @@ class ConnectorMock {
                         "UID": "8a0669b4-7795-44aa-8498-8d7f0d82937c",
                         "name": "Проведение документа",
                         "type": "task",
-                        "status": "wait",
+                        "status": "running",
                         "subsystemTitle": "ТС.МЛ",
                         "creationDate": "2024-01-03T19:18:44",
                         "completionDate": "0001-01-01T00:00:00",
@@ -1011,6 +1011,7 @@ class ConnectorMock {
 
     async getTasks(filters, subsystems) {
 
+        await sleep(this.pauseMSec);
         //let tasks = [];
 
         // if (subsystems.length === 0) {

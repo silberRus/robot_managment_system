@@ -4,7 +4,7 @@ class DataService {
 
         this.filters = {
             completed: false,
-            errors: true,
+            error: true,
             pending: true,
             running: true
         };
