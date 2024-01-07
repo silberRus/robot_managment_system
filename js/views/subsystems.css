@@ -3,27 +3,44 @@
     padding: 10px;
     margin-bottom: 5px;
     border: 1px solid #ddd;
+    background-color: #fff;
     cursor: pointer;
     user-select: none; /* не позволяет выделять текст при двойном клике */
 }
 
-.subsystem.selected {
-    /* Стили для выбранной подсистемы */
-    background-color: #deffcd; /* или другой цвет, который вы предпочитаете */
-    border-color: #c8c8c8;
-}
-
 .children {
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
-/* Стили для дочерних подсистем */
-.children .subsystem {
-    border-left: 2px solid #e8e8e8; /* или другой цвет, который вы предпочитаете */
+.subsystem-properties {
+    background-color: #fff8e8;
+    color: #333;
+    width: 100%; /* Занимает всю ширину контейнера */
+    padding: 5px; /* Внутренние отступы для удобства ввода */
+    margin-top: 4px; /* Отступ сверху */
+    margin-bottom: 10px; /* Отступ снизу */
+    border: 1px solid #ccc; /* Тонкая граница со светлым цветом */
+    box-sizing: border-box; /* Включает padding и border в общую ширину */
 }
 
-/* Стили для подсистем, когда они не выбраны */
-.children .subsystem:not(.selected) {
-    background-color: #fff;
-    border-color: #ddd;
+/* Стили для полей ввода секунд */
+.input-seconds {
+    width: 90%;
+    background-color: #f0f0f0; /* Светлый фон для выделения */
+    border-color: #b0c4de; /* Светло-голубой цвет границы */
+}
+
+/* Стили для полей ввода количества */
+.input-quantity {
+    width: 90%;
+    background-color: #f7f7f7; /* Немного темнее фон, чем у полей секунд */
+    border-color: #a9a9a9; /* Темно-серый цвет границы */
+}
+
+/* Стили для меток свойств */
+.subsystem-properties-label {
+    display: block; /* Стиль блочного элемента */
+    color: #333; /* Темно-серый цвет текста */
+    font-size: 14px; /* Размер шрифта */
+    margin-bottom: 2px; /* Отступ между меткой и полем ввода */
 }

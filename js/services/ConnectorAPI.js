@@ -70,4 +70,8 @@ class ConnectorAPI {
     getSubsystems() {
         return this.makeRequest('subsystems');
     }
+
+    async updateSubsystem(subsystem) {
+        return this.makeRequest('subsystems/' + subsystem.id, 'POST', subsystem, false);
+    }
 }

@@ -47,18 +47,9 @@ class SubsystemView {
     }
 
     handleCheckboxChange(event, subSystem) {
-        const checked = event.target.checked;
-        subSystem.setMarked(checked); // Обновление отметки подсистемы
-
-        // Обновление отметок для дочерних подсистем
+        subSystem.setMarked(event.target.checked);
         this.updateChildrenCheckboxes(event.target, subSystem);
-        // Обновление отметок для родительских подсистем
         this.updateParentCheckboxes(event.target);
-
-        // Оповещение DataService о необходимости обновить задачи с новыми фильтрами
-        //this.dataService.updateTasksWithFilters();
-
-        // Оповещение о необходимости обновить представление
         document.dispatchEvent(new CustomEvent('updateView'));
     }
 
@@ -103,15 +94,20 @@ class SubsystemView {
         propertiesContainer.style.display = 'none';
 
         // Функция для создания поля редактирования свойства
-        const createPropertyInput = (labelText, value, updateMethod) => {
+        const createPropertyInput = (labelText, value, updateMethod, className) => {
             const container = document.createElement('div');
             const label = document.createElement('label');
+            label.classList.add('subsystem-properties-label');
             label.textContent = labelText;
             const input = document.createElement('input');
             input.type = 'number';
             input.value = value;
+            input.min = '0';
+            input.step = '1';
+            input.className = className;
             input.addEventListener('change', (e) => {
                 updateMethod.call(subSystem, e.target.value);
+                this.dataService.connector.updateSubsystem(subSystem);
             });
             container.appendChild(label);
             container.appendChild(input);
@@ -119,10 +115,10 @@ class SubsystemView {
         };
 
         // Добавляем поля для свойств
-        propertiesContainer.appendChild(createPropertyInput('Время жизни выполненных (сек): ', subSystem.lifetimeOfCompleted, subSystem.updateLifetimeOfCompleted));
-        propertiesContainer.appendChild(createPropertyInput('Максимальное время работы фонового (сек): ', subSystem.maxBackgroundRuntime, subSystem.updateMaxBackgroundRuntime));
-        propertiesContainer.appendChild(createPropertyInput('Количество попыток: ', subSystem.attemptCount, subSystem.updateAttemptCount));
-        propertiesContainer.appendChild(createPropertyInput('Пауза между попытками (сек): ', subSystem.pauseBetweenAttempts, subSystem.updatePauseBetweenAttempts));
+        propertiesContainer.appendChild(createPropertyInput('Время жизни выполненных (сек): ', subSystem.lifetimeOfCompleted, subSystem.updateLifetimeOfCompleted, 'input-seconds'));
+        propertiesContainer.appendChild(createPropertyInput('Максимальное время работы фонового (сек): ', subSystem.maxBackgroundRuntime, subSystem.updateMaxBackgroundRuntime, 'input-seconds'));
+        propertiesContainer.appendChild(createPropertyInput('Количество попыток: ', subSystem.attemptCount, subSystem.updateAttemptCount, 'input-quantity'));
+        propertiesContainer.appendChild(createPropertyInput('Пауза между попытками (сек): ', subSystem.pauseBetweenAttempts, subSystem.updatePauseBetweenAttempts, 'input-seconds'));
 
         return propertiesContainer;
     }

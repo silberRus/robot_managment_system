@@ -1,14 +1,15 @@
 class SubSystem {
-    constructor(id, name) {
+    constructor(id, name, properties = {}) {
+
         this.id = id;
         this.name = name;
         this.children = [];
         this.marked = false;
 
-        this.lifetimeOfCompleted = 0; // Время жизни выполненных
-        this.maxBackgroundRuntime = 0; // Максимальное время работы фонового
-        this.attemptCount = 0; // Количество попыток
-        this.pauseBetweenAttempts = 0; // Пауза между попытками
+        this.lifetimeOfCompleted = properties.lifetimeOfCompleted || 0; // Время жизни выполненных
+        this.maxBackgroundRuntime = properties.maxBackgroundRuntime || 0; // Максимальное время работы фонового
+        this.attemptCount = properties.attemptCount || 0; // Количество попыток
+        this.pauseBetweenAttempts = properties.pauseBetweenAttempts || 0; // Пауза между попытками
     }
 
     addChild(subSystem) {

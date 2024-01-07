@@ -44,9 +44,7 @@ class DataService {
     async getTasks() {
 
         this.tasks = [];
-        const markedSubsystemsIds = this.getMarkedSubsystemsIds(this.subSystems);
-        console.log(markedSubsystemsIds);
-        const tasks = await this.connector.getTasks(markedSubsystemsIds);
+        const tasks = await this.connector.getTasks(this.getMarkedSubsystemsIds(this.subSystems));
         tasks.forEach(item => {
             if (item.type === "task") {
                 this.tasks.push(new Task(item)); // Убедитесь, что item действительно содержит данные задачи
@@ -105,9 +103,13 @@ class DataService {
         return this.subSystems;
     }
 
+    async updateSubsystem(subsystem) {
+        await this.connector.updateSubsystem(subsystem);
+    }
+
     parseSubsystems(data) {
         return data.map(item => {
-            const subSystem = new SubSystem(item.id, item.name);
+            const subSystem = new SubSystem(item.id, item.name, item);
             if (item.children && item.children.length) {
                 const children = this.parseSubsystems(item.children);
                 children.forEach(child => subSystem.addChild(child));

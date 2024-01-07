@@ -25,82 +25,154 @@ class ConnectorMock {
             {
                 "id": "t",
                 "name": "Весь транспорт",
+                "lifetimeOfCompleted": 600,
+                "maxBackgroundRuntime": 1200,
+                "attemptCount": 3,
+                "pauseBetweenAttempts": 30,
                 "children": [
                     {
                         "id": "tM",
-                        "name": "Маршрутные листы"
+                        "name": "Маршрутные листы",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "tS",
-                        "name": "Сборка заказа"
+                        "name": "Сборка заказа",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     }
                 ]
             },
             {
                 "id": "x",
                 "name": "Все процессы xPL",
+                "lifetimeOfCompleted": 600,
+                "maxBackgroundRuntime": 1200,
+                "attemptCount": 3,
+                "pauseBetweenAttempts": 30,
                 "children": [
                     {
                         "id": "xM",
-                        "name": "xPL Статусы маршрутных листов"
+                        "name": "xPL Статусы маршрутных листов",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "xR",
-                        "name": "xPL Размещение после растановки межблока"
+                        "name": "xPL Размещение после растановки межблока",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "xU",
-                        "name": "xPL Отмена ЗНС по e-COMM"
+                        "name": "xPL Отмена ЗНС по e-COMM",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     }
                 ]
             },
             {
                 "id": "w",
                 "name": "Все складские процессы",
+                "lifetimeOfCompleted": 600,
+                "maxBackgroundRuntime": 1200,
+                "attemptCount": 3,
+                "pauseBetweenAttempts": 30,
                 "children": [
                     {
                         "id": "wA",
-                        "name": "Аптечный хаб"
+                        "name": "Аптечный хаб",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "wS",
-                        "name": "Динамика работы склада"
+                        "name": "Динамика работы склада",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     }
                 ]
             },
             {
                 "id": "s",
                 "name": "Все продажи",
+                "lifetimeOfCompleted": 600,
+                "maxBackgroundRuntime": 1200,
+                "attemptCount": 3,
+                "pauseBetweenAttempts": 30,
                 "children": [
                     {
                         "id": "sA",
-                        "name": "Аптека"
+                        "name": "Аптека",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "sC",
-                        "name": "Подбор товаров"
+                        "name": "Подбор товаров",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "s7",
-                        "name": "Схема 702"
+                        "name": "Схема 702",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "sM",
-                        "name": "Маркировка"
+                        "name": "Маркировка",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     },
                     {
                         "id": "sV",
-                        "name": "Виды расчетов"
+                        "name": "Виды расчетов",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     }
                 ]
             },
             {
                 "id": "b",
                 "name": "Бюджетные продажи",
+                "lifetimeOfCompleted": 600,
+                "maxBackgroundRuntime": 1200,
+                "attemptCount": 3,
+                "pauseBetweenAttempts": 30,
                 "children": [
                     {
                         "id": "bA",
-                        "name": "Актуализация статусов РА"
+                        "name": "Актуализация статусов РА",
+                        "lifetimeOfCompleted": 600,
+                        "maxBackgroundRuntime": 1200,
+                        "attemptCount": 3,
+                        "pauseBetweenAttempts": 30
                     }
                 ]
             }
@@ -408,6 +480,9 @@ c = 3
         this.robots.push(new Robot("robot"));
     }
 
+    async updateSubsystem(subsystem) {
+        await sleep(this.pauseMSec);
+    }
 }
 
 function sleep(ms) {
