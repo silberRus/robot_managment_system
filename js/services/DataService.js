@@ -41,13 +41,12 @@ class DataService {
         }
     }
 
-    getItems() {
-        return this.items;
-    }
-
     async getTasks() {
-        const tasks = await this.connector.getTasks();
+
         this.tasks = [];
+        const markedSubsystemsIds = this.getMarkedSubsystemsIds(this.subSystems);
+        console.log(markedSubsystemsIds);
+        const tasks = await this.connector.getTasks(markedSubsystemsIds);
         tasks.forEach(item => {
             if (item.type === "task") {
                 this.tasks.push(new Task(item)); // Убедитесь, что item действительно содержит данные задачи
@@ -72,6 +71,19 @@ class DataService {
                 }
             }
         }
+    }
+
+    getMarkedSubsystemsIds(subsystems) {
+        let ids = [];
+        for (let ss of subsystems) {
+            if (ss.isMarked()) {
+                ids.push(ss.id);
+                if (ss.children && ss.children.length > 0) {
+                    ids = ids.concat(this.getMarkedSubsystemsIds(ss.children));
+                }
+            }
+        }
+        return ids;
     }
 
     async getSettings() {

@@ -26,7 +26,7 @@ class ConnectorAPI {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status} body: ${await response.text()}`);
         }
-        return  returnJson ? await response.json() : true;
+        return  returnJson ? response.json() : true;
     }
 
     async getRobots() {
@@ -37,16 +37,22 @@ class ConnectorAPI {
         return this.makeRequest('robots', 'POST', robot);
     }
 
+    async updateRobot(robot) {
+        return this.makeRequest('robot/' + robot.name, 'POST', robot, false);
+    }
+
     async deleteRobot(robot) {
         return this.makeRequest('robot/' + robot.name, 'DELETE', null, false);
     }
 
     async changeRobot(robot) {
-        return this.makeRequest('robot/' + robot.id, 'POST', robot);
+        return this.makeRequest('robot/' + robot.id, 'POST', robot, false);
     }
 
-    async getTasks() {
-        return this.makeRequest('tasks');
+    async getTasks(markedSubsystemsIds) {
+        return markedSubsystemsIds.length ?
+            this.makeRequest('tasks', 'POST', {"subsystems": markedSubsystemsIds}) :
+            this.makeRequest('tasks');
     }
 
     async getTask(UID) {

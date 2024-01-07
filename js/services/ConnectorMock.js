@@ -194,14 +194,14 @@ class ConnectorMock {
                     },
                     {
                         "UID": "81900a3e-1f57-43aa-8b85-fd3b41019716",
-                        "subsystem": "tM",
+                        "subsystem": "t",
                         "name": "Запись документа",
                         "type": "task",
                         "tasks": []
                     },
                     {
                         "UID": "13a520a5-dc41-4675-b606-406bda7fae49",
-                        "subsystem": "tM",
+                        "subsystem": "t",
                         "name": "Расчет итогов",
                         "type": "task",
                         "tasks": []
@@ -309,7 +309,7 @@ class ConnectorMock {
                 "UID": "22569315-b98f-4535-980e-7e2649b9dd43",
                 "name": "Задание с ошибкой",
                 "type": "task",
-                "subsystem": "wS",
+                "subsystem": "t",
                 "robot":"R2D2",
                 "status": "working",
                 "text": `
@@ -379,6 +379,10 @@ c = 3
             delete task.text;
         }
         return this.tasks;
+    }
+
+    async getTasksFilteredBySubsystems(subsystems) {
+        return this.tasks.filter(task => subsystems.includes(task.subsystem));
     }
 
     async getTask(UID) {

@@ -4,7 +4,7 @@ class App {
         this.taskView = new TaskView(this.dataService);
         this.packageView = new PackageView(this.dataService);
         this.robotView = new RobotView(this);
-        this.subsystemView = new SubsystemView();
+        this.subsystemView = new SubsystemView(this.dataService);
     }
 
     mainToggle = () => document.getElementById('toggle-system');
