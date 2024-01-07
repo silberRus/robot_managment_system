@@ -11,9 +11,13 @@ class TaskView {
         toggleDetailsIcon.innerHTML = '&#x25BC;'; // HTML-код стрелки вниз
         toggleDetailsIcon.classList.add('toggle-details-icon');
 
+        const createDateElement = document.createElement('span');
+        createDateElement.classList.add('task-creation-date');
+        createDateElement.textContent = `${MyDate(task.creationDate)} | `;
+
         const subsystemElement = document.createElement('span');
         subsystemElement.classList.add('task-subsystem');
-        subsystemElement.textContent = `${task.subsystem} | `;
+        subsystemElement.textContent = `${task.subsystemTitle} | `;
 
         const taskNameElement = document.createElement('span');
         taskNameElement.classList.add('task-name');
@@ -61,6 +65,7 @@ class TaskView {
         });
 
         taskElement.appendChild(toggleDetailsIcon);
+        taskElement.appendChild(createDateElement);
         taskElement.appendChild(subsystemElement);
         taskElement.appendChild(taskNameElement);
         taskElement.appendChild(taskStatusElement);

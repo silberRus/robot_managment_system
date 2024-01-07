@@ -68,18 +68,25 @@ class App {
                 this.updateView();
             });
         });
-
-        // document.addEventListener('deleteRobot', (event) => {
-        //     event.target.textContent = 'Удаление...';
-        //     this.dataService.deleteRobot(event.detail).then(r => {
-        //         this.updateView();
-        //     });
-        // });
-
         document.addEventListener('updateView', () => {
             this.updateView();
-        })
+        });
+
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const filterName = button.id.replace('filter', '');
+                this.toggleFilter(filterName);
+            });
+        });
     }
+
+    toggleFilter(filterName) {
+        const button = document.getElementById(`filter${filterName}`);
+        const isActive = button.classList.toggle('active');
+        this.dataService.setFilterState(filterName.toLowerCase(), isActive);
+        this.updateView();
+    }
+
 
     init() {
         this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
@@ -88,6 +95,17 @@ class App {
         this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
         this.addEventListeners();
     }
+}
+
+function MyDate(date) {
+    return date.toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    });
 }
 
 // Запускаем приложение

@@ -24,10 +24,15 @@
 <div id="main">
     <div id="sidebar">
         <div id="subsystems"></div>
-        <!-- Если будут настройки, их можно добавить ниже -->
-        <!-- <div id="settings"></div> -->
     </div>
     <div id="content">
+        <div id="filters-container">
+            <button id="filterCompleted" class="filter-button">Выполненные</button>
+            <button id="filterErrors" class="filter-button active">Ошибки</button>
+            <button id="filterPending" class="filter-button active">Ожидающие</button>
+            <button id="filterRunning" class="filter-button active">Работающие</button>
+        </div>
+
         <div id="packages"></div>
     </div>
 </div>

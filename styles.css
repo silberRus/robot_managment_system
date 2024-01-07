@@ -246,5 +246,32 @@ button:disabled {
     cursor: not-allowed;   /* Курсор в виде знака запрета */
 }
 
+/* Стили для фильтров */
 
+#filters-container {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-button {
+    color: #a0a0a0;
+    padding: 5px 10px;
+    border: 2px solid #ccc;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-button.active {
+    color: #000000;
+    background-color: #e0e0e0; /* Темнее при активации */
+    border-color: #a0a0a0; /* Темнее граница */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Внутренняя тень для эффекта вдавливания */
+}
+
+.filter-button:hover {
+    background-color: #f0f0f0;
+}
 

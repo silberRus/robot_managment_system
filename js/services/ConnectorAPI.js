@@ -49,9 +49,24 @@ class ConnectorAPI {
         return this.makeRequest('robot/' + robot.id, 'POST', robot, false);
     }
 
-    async getTasks(markedSubsystemsIds) {
-        return markedSubsystemsIds.length ?
-            this.makeRequest('tasks', 'POST', {"subsystems": markedSubsystemsIds}) :
+    async getTasks(filter, markedSubsystemsIds) {
+        let filterApi = {};
+        // Проверяем, есть ли в фильтре хотя бы одно свойство со значением false
+        if (Object.values(filter).some(value => !value)) {
+            filterApi = {
+                ...filterApi,
+                "filters": filter
+            };
+        }
+        if (markedSubsystemsIds.length) {
+            filterApi = {
+                ...filterApi,
+                "subsystems": markedSubsystemsIds
+            };
+        }
+        // Отправляем запрос с фильтрами, если filterApi не пустой
+        return Object.keys(filterApi).length ?
+            this.makeRequest('tasks', 'POST', filterApi) :
             this.makeRequest('tasks');
     }
 

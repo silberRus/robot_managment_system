@@ -2,6 +2,13 @@
 class DataService {
     constructor() {
 
+        this.filters = {
+            completed: false,
+            errors: true,
+            pending: true,
+            running: true
+        };
+
         this.subSystems = [];
         this.robots = [];
         this.tasks = [];
@@ -13,6 +20,12 @@ class DataService {
         this.connector.getSubsystems().then(data => {
             this.subSystems = this.parseSubsystems(data);
         })
+    }
+
+    setFilterState(filter, value) {
+        if (this.filters.hasOwnProperty(filter)) {
+            this.filters[filter] = value;
+        }
     }
 
     async deleteRobot(robot) {
@@ -44,15 +57,15 @@ class DataService {
     async getTasks() {
 
         this.tasks = [];
-        const tasks = await this.connector.getTasks(this.getMarkedSubsystemsIds(this.subSystems));
+        const tasks = await this.connector.getTasks(this.filters, this.getMarkedSubsystemsIds(this.subSystems));
         tasks.forEach(item => {
             if (item.type === "task") {
-                this.tasks.push(new Task(item)); // Убедитесь, что item действительно содержит данные задачи
+                this.tasks.push(new Task(item));
             } else if (item.type === "package") {
                 const pkg = new Package(item.name);
                 this.tasks.push(pkg);
                 item.tasks.forEach(taskData => {
-                    const task = new Task(taskData); // Убедитесь, что taskData содержит нужные данные
+                    const task = new Task(taskData);
                     pkg.addTask(task);
                 });
             }
