@@ -30,27 +30,28 @@ class ConnectorAPI {
     }
 
     async getRobots() {
-        return this.makeRequest('robots');
+        return await this.makeRequest('robots');
     }
 
     async addRobot(robot) {
-        return this.makeRequest('robots', 'POST', robot);
+        return await this.makeRequest('robots', 'POST', robot);
     }
 
     async updateRobot(robot) {
-        return this.makeRequest('robot/' + robot.name, 'POST', robot, false);
+        return await this.makeRequest('robot/' + robot.name, 'POST', robot, false);
     }
 
     async deleteRobot(robot) {
-        return this.makeRequest('robot/' + robot.name, 'DELETE', null, false);
+        return await this.makeRequest('robot/' + robot.name, 'DELETE', null, false);
     }
 
     async changeRobot(robot) {
-        return this.makeRequest('robot/' + robot.id, 'POST', robot, false);
+        return await this.makeRequest('robot/' + robot.id, 'POST', robot, false);
     }
 
-    async getTasks(filter, markedSubsystemsIds) {
-        let filterApi = {};
+    async getTasks(limit, filter, markedSubsystemsIds) {
+        console.log(limit);
+        let filterApi = {limit: limit};
         // Проверяем, есть ли в фильтре хотя бы одно свойство со значением false
         if (Object.values(filter).some(value => !value)) {
             filterApi = {
@@ -66,27 +67,27 @@ class ConnectorAPI {
         }
         // Отправляем запрос с фильтрами, если filterApi не пустой
         return Object.keys(filterApi).length ?
-            this.makeRequest('tasks', 'POST', filterApi) :
-            this.makeRequest('tasks');
+            await this.makeRequest('tasks', 'POST', filterApi) :
+            await this.makeRequest('tasks');
     }
 
     async getTask(UID) {
-        return this.makeRequest('tasks/' + UID);
+        return await this.makeRequest('tasks/' + UID);
     }
 
     async getSettings() {
-        return this.makeRequest('settings');
+        return await this.makeRequest('settings');
     }
 
     async setSettings(settings) {
-        return this.makeRequest('settings', 'POST', settings, false);
+        return await this.makeRequest('settings', 'POST', settings, false);
     }
 
-    getSubsystems() {
-        return this.makeRequest('subsystems');
+    async getSubsystems() {
+        return await this.makeRequest('subsystems');
     }
 
     async updateSubsystem(subsystem) {
-        return this.makeRequest('subsystems/' + subsystem.id, 'POST', subsystem, false);
+        return await this.makeRequest('subsystems/' + subsystem.id, 'POST', subsystem, false);
     }
 }

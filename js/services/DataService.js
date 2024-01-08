@@ -17,9 +17,9 @@ class DataService {
         this.connector = new ConnectorMock();
         //this.connector = new Connector1CInside();
 
-        this.connector.getSubsystems().then(data => {
-            this.subSystems = this.parseSubsystems(data);
-        })
+        this.connector.getSubsystems().then(subsystems => {
+            return this.subSystems = this.parseSubsystems(subsystems);
+        });
     }
 
     setFilterState(filter, value) {
@@ -55,8 +55,8 @@ class DataService {
     }
 
     async getTasks(limit) {
-
         this.tasks = [];
+        console.log(this.subSystems);
         const tasks = await this.connector.getTasks(limit, this.filters, this.getMarkedSubsystemsIds(this.subSystems));
         tasks.forEach(item => {
             if (item.type === "task") {
