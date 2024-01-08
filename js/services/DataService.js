@@ -56,7 +56,6 @@ class DataService {
 
     async getTasks(limit) {
         this.tasks = [];
-        console.log(this.subSystems);
         const tasks = await this.connector.getTasks(limit, this.filters, this.getMarkedSubsystemsIds(this.subSystems));
         tasks.forEach(item => {
             if (item.type === "task") {

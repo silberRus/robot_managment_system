@@ -50,9 +50,7 @@ class ConnectorAPI {
     }
 
     async getTasks(limit, filter, markedSubsystemsIds) {
-        console.log(limit);
         let filterApi = {limit: limit};
-        // Проверяем, есть ли в фильтре хотя бы одно свойство со значением false
         if (Object.values(filter).some(value => !value)) {
             filterApi = {
                 ...filterApi,
@@ -65,7 +63,6 @@ class ConnectorAPI {
                 "subsystems": markedSubsystemsIds
             };
         }
-        // Отправляем запрос с фильтрами, если filterApi не пустой
         return Object.keys(filterApi).length ?
             await this.makeRequest('tasks', 'POST', filterApi) :
             await this.makeRequest('tasks');

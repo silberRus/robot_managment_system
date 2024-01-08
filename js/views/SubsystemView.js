@@ -4,14 +4,14 @@ class SubsystemView {
     }
 
     render(subSystem) {
-        const propertiesContainer = this.createPropertiesContainer(subSystem); // Создание контейнера свойств
-        const subSystemElement = this.createSubsystemElement(subSystem, propertiesContainer); // Создание элемента подсистемы с заголовком
-        const checkbox = this.createCheckbox(subSystem); // Создание чекбокса
-        const childrenContainer = this.createChildrenContainer(subSystem); // Создание контейнера для дочерних элементов
+        const propertiesContainer = this.createPropertiesContainer(subSystem);
+        const subSystemElement = this.createSubsystemElement(subSystem, propertiesContainer);
+        const checkbox = this.createCheckbox(subSystem);
+        const childrenContainer = this.createChildrenContainer(subSystem);
 
-        subSystemElement.prepend(checkbox); // Добавление чекбокса в начало элемента подсистемы
-        subSystemElement.appendChild(propertiesContainer); // Добавление контейнера свойств перед дочерними элементами
-        subSystemElement.appendChild(childrenContainer); // Добавление контейнера для дочерних элементов
+        subSystemElement.prepend(checkbox);
+        subSystemElement.appendChild(propertiesContainer);
+        subSystemElement.appendChild(childrenContainer);
 
         return subSystemElement;
     }
@@ -25,7 +25,6 @@ class SubsystemView {
         subSystemTitle.className = 'subsystem-title';
         subSystemTitle.innerText = subSystem.name;
 
-        // Обработчик события клика для разворачивания и сворачивания свойств подсистемы
         subSystemTitle.addEventListener('click', () => {
             propertiesContainer.style.display = propertiesContainer.style.display === 'none' ? 'block' : 'none';
         });
@@ -93,7 +92,6 @@ class SubsystemView {
         propertiesContainer.className = 'subsystem-properties';
         propertiesContainer.style.display = 'none';
 
-        // Функция для создания поля редактирования свойства
         const createPropertyInput = (labelText, value, updateMethod, className) => {
             const container = document.createElement('div');
             const label = document.createElement('label');
@@ -114,7 +112,6 @@ class SubsystemView {
             return container;
         };
 
-        // Добавляем поля для свойств
         propertiesContainer.appendChild(createPropertyInput('Время жизни выполненных (сек): ', subSystem.lifetimeOfCompleted, subSystem.updateLifetimeOfCompleted, 'input-seconds'));
         propertiesContainer.appendChild(createPropertyInput('Максимальное время работы фонового (сек): ', subSystem.maxBackgroundRuntime, subSystem.updateMaxBackgroundRuntime, 'input-seconds'));
         propertiesContainer.appendChild(createPropertyInput('Количество попыток: ', subSystem.attemptCount, subSystem.updateAttemptCount, 'input-quantity'));

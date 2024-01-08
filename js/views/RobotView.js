@@ -42,7 +42,7 @@ class RobotView {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = 'subsystem-' + subsystem.id;
-        checkbox.checked = robot.subsystems.includes(subsystem.id); // Это должно работать для любого уровня подсистемы
+        checkbox.checked = robot.subsystems.includes(subsystem.id);
 
         const label = document.createElement('label');
         label.htmlFor = 'subsystem-' + subsystem.id;
@@ -146,13 +146,11 @@ class RobotView {
                 if (checkbox && checkbox.checked) {
                     list.push(sub.id); // Сохраняем ID подсистемы
                 }
-                // Рекурсивно проверяем дочерние элементы независимо от состояния родителя
                 if (sub.children && sub.children.length > 0) {
                     addCheckedSubsystems(sub.children, list);
                 }
             });
         };
-
         addCheckedSubsystems(subsystemsList, checkedSubsystemsIds);
         return checkedSubsystemsIds; // Возвращаем массив ID подсистем
     }

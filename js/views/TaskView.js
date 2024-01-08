@@ -38,14 +38,10 @@ class TaskView {
             toggleDetailsIcon.innerHTML = isHidden ? '&#x25B2;' : '&#x25BC;'; // Стрелка вверх или вниз
 
             if (isHidden && !taskDetailsElement.hasChildNodes()) {
-                // Показываем индикатор загрузки
                 taskDetailsElement.innerHTML = '<div class="loader">(...)</div>';
                 try {
-                    // Загружаем детали задачи
                     await this.connector.updateTaskDetail(task);
-                    // Очищаем индикатор загрузки
                     taskDetailsElement.innerHTML = '';
-                    // Отображаем детали задачи
                     if (task.errorDescription) {
                         const errorDescElement = document.createElement('div');
                         errorDescElement.classList.add('task-error');
@@ -59,7 +55,6 @@ class TaskView {
                         taskDetailsElement.appendChild(taskTextElement);
                     }
                 } catch (error) {
-                    // Обработка ошибок
                     taskDetailsElement.innerHTML = '<div class="error">Ошибка загрузки деталей задачи: ' + error + '</div>';
                 }
             }

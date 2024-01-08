@@ -7,6 +7,7 @@ class App {
         this.subsystemView = new SubsystemView(this.dataService);
         this.tasksPerPage = 10;
         this.updateTasksDebounced = this.debounce(this.updateView, 500);
+        this.mainToggleElement = null;
     }
 
     mainToggle = () => document.getElementById('toggle-system');
@@ -34,7 +35,14 @@ class App {
     }
 
     renderSettings(settings) {
-        this.mainToggle.checked = this.mainToggle().isActive;
+        if (!this.mainToggleElement) {
+            this.mainToggleElement = document.getElementById('toggle-system');
+        }
+        if (this.mainToggleElement) {
+            this.mainToggleElement.checked = settings.isActive;
+        } else {
+            console.error('Элемент переключателя не найден');
+        }
     }
 
     renderSubsystems(subsystems) {
@@ -58,7 +66,7 @@ class App {
     }
 
     addEventListeners() {
-        const addRobotButton = document.getElementById('addRobot'); // Сохраняем ссылку на кнопку
+        const addRobotButton = document.getElementById('addRobot');
         addRobotButton.addEventListener('click', async () => {
             addRobotButton.classList.add('working-progress');
             addRobotButton.disabled = true;
@@ -111,6 +119,7 @@ class App {
 
     init() {
         this.addEventListeners();
+        this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
         this.updateView();
     }
@@ -128,7 +137,6 @@ class App {
             timeout = setTimeout(later, wait);
         };
     }
-
 }
 
 function strData(date) {
@@ -142,6 +150,5 @@ function strData(date) {
     });
 }
 
-// Запускаем приложение
 const app = new App();
 app.init();

@@ -1010,18 +1010,7 @@ class ConnectorMock {
     }
 
     async getTasks(limit, filters, subsystems) {
-
-        //await sleep(this.pauseMSec);
         await sleep(1000);
-
-        // Уменьшим task количество до лимита
-        //let tasks = [];
-
-        // if (subsystems.length === 0) {
-        //     tasks = this.tasks.filter(task => subsystems.includes(task.subsystem));
-        // }
-        //return tasks;
-        console.log(limit);
         return this.tasks.slice(0, limit);
     }
 
