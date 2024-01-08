@@ -39,7 +39,7 @@ class TaskView {
 
             if (isHidden && !taskDetailsElement.hasChildNodes()) {
                 // Показываем индикатор загрузки
-                taskDetailsElement.innerHTML = '<div class="loader">...</div>';
+                taskDetailsElement.innerHTML = '<div class="loader">(...)</div>';
                 try {
                     // Загружаем детали задачи
                     await this.connector.updateTaskDetail(task);
