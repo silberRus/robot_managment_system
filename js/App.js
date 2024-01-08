@@ -5,6 +5,8 @@ class App {
         this.packageView = new PackageView(this.dataService);
         this.robotView = new RobotView(this);
         this.subsystemView = new SubsystemView(this.dataService);
+        this.tasksPerPage = 10;
+        this.updateTasksDebounced = this.debounce(this.updateView, 500);
     }
 
     mainToggle = () => document.getElementById('toggle-system');
@@ -12,12 +14,12 @@ class App {
     updateView() {
 
         const tasksContainer = document.getElementById('packages');
-        tasksContainer.innerHTML = '<div class="loader">...</div>';
+        tasksContainer.innerHTML = '<div class="loader">ЕИС</div>';
 
         this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getRobots().then(r => this.renderRobots(r));
 
-        this.dataService.getTasks().then(t => {
+        this.dataService.getTasks(this.tasksPerPage).then(t => {
             tasksContainer.innerHTML = '';
             this.renderPackagesAndTasks(t);
         });
@@ -62,7 +64,7 @@ class App {
             addRobotButton.disabled = true;
             try {
                 await this.dataService.addRobot();
-                this.updateView();
+                this.dataService.getRobots().then(r => this.renderRobots(r));
             } catch (error) {
                 console.error('Произошла ошибка при добавлении робота', error);
             } finally {
@@ -91,6 +93,12 @@ class App {
                 this.toggleFilter(filterName);
             });
         });
+
+        const tasksPerPageSlider = document.getElementById('tasksPerPage');
+        tasksPerPageSlider.addEventListener('input', (event) => {
+            this.tasksPerPage = event.target.value;
+            this.updateTasksDebounced(); // Используйте debounced версию updateView
+        });
     }
 
     toggleFilter(filterName) {
@@ -102,12 +110,25 @@ class App {
 
 
     init() {
-        this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
-        this.dataService.getSettings().then(s => this.renderSettings(s));
-        this.dataService.getRobots().then(r => this.renderRobots(r));
-        this.dataService.getTasks().then(t => this.renderPackagesAndTasks(t));
         this.addEventListeners();
+        this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
+        this.updateView();
     }
+
+    // Ограничитель запросов к 1с чтобы не долбить сервер
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func.apply(this, args);
+            };
+
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
 }
 
 function strData(date) {

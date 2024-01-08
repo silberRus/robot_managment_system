@@ -24,7 +24,7 @@ class RobotView {
             deleteRobotButton.classList.add('working-progress');
             deleteRobotButton.disabled = true;
             this.dataService.deleteRobot(robot).then(() => {
-                this.app.updateView(); // Вызов метода обновления представления
+                this.dataService.getRobots().then(r => this.app.renderRobots(r));
             }).catch(error => {
                 console.error('Ошибка при удалении робота', error);
                 deleteRobotButton.classList.remove('working-progress');
@@ -155,16 +155,5 @@ class RobotView {
 
         addCheckedSubsystems(subsystemsList, checkedSubsystemsIds);
         return checkedSubsystemsIds; // Возвращаем массив ID подсистем
-    }
-
-
-    deleteRobot(robotId) {
-        this.dataService.deleteRobot(robotId).then(() => {
-            // Создаем и диспатчим событие обновления представления
-            const updateViewEvent = new Event('updateView');
-            document.dispatchEvent(updateViewEvent);
-        }).catch(error => {
-            console.error('Ошибка при удалении робота', error);
-        });
     }
 }

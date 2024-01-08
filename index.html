@@ -32,6 +32,10 @@
             <button id="filterError" class="filter-button active">Ошибки</button>
             <button id="filterPending" class="filter-button active">Ожидающие</button>
             <button id="filterRunning" class="filter-button active">Работающие</button>
+            <label for="tasksPerPage">max</label>
+            <input type="range" id="tasksPerPage" name="tasksPerPage"
+                   min="10" max="1000" value="10" oninput="tasksPerPageOutput.value = this.value">
+            <output id="tasksPerPageOutput">10</output>
         </div>
 
         <div id="packages"></div>

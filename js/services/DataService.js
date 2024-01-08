@@ -54,10 +54,10 @@ class DataService {
         }
     }
 
-    async getTasks() {
+    async getTasks(limit) {
 
         this.tasks = [];
-        const tasks = await this.connector.getTasks(this.filters, this.getMarkedSubsystemsIds(this.subSystems));
+        const tasks = await this.connector.getTasks(limit, this.filters, this.getMarkedSubsystemsIds(this.subSystems));
         tasks.forEach(item => {
             if (item.type === "task") {
                 this.tasks.push(new Task(item));
