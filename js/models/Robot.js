@@ -1,8 +1,10 @@
 class Robot {
-    constructor(name, subsystems = [], ) {
+    constructor(name, subsystems = [], status = 'idle', currentTask = '') {
         this.id = this.generateIdFromName(name);
         this.name = name;
         this.subsystems = subsystems;
+        this.status = status;
+        this.currentTask = currentTask;
     }
 
     generateIdFromName(name) {

@@ -24,7 +24,10 @@
 }
 
 .task-running {
-    color: #445ea9;
+    color: #3a9a2e;
+}
+.task-works {
+    color: #2b4ba2;
 }
 
 .task-creation-date, .task-subsystem {
@@ -48,9 +51,15 @@
     border-top: 1px solid #eee;
     padding: 10px;
     background-color: #f8f8f8; /* Светлый фон для деталей */
-    max-height: 200px; /* Ограничиваем максимальную высоту */
     overflow-y: auto; /* Добавляем прокрутку если содержимое слишком длинное */
     width: 100%; /* Занимаем всю доступную ширину */
+}
+
+.task-details pre {
+    white-space: pre-wrap; /* Переносит строки внутри <pre> */
+    word-wrap: break-word; /* Переносит длинные слова на новую строку */
+    overflow-x: auto; /* Позволяет горизонтальную прокрутку если содержимое слишком широкое */
+    max-width: 100%; /* Ограничивает ширину <pre> шириной родительского контейнера */
 }
 
 .task-error, .task-text {
@@ -66,6 +75,23 @@
 
 .task-text {
     color: #2c3e50; /* Тёмно-синий цвет для текста задачи */
+}
+
+.task-property {
+    color: black;
+    display: flex;
+    padding: 2px;
+    border-bottom: 1px solid #eee;
+}
+
+.task-property-key {
+    font-size: smaller;
+    color: black;
+}
+
+.task-property-value {
+    margin-left: 8px;
+    font-weight: bold;
 }
 
 .loader {

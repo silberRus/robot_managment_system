@@ -6,31 +6,44 @@ class RobotView {
 
     render(robot) {
         const idDelButton = "delete-robot-" + robot.id; // Уникальный ID для кнопки удаления
+        const statusRus = robot.status === "deleting" ? "Удаление" : robot.status === "working" ? "Работает" : "ожидает";
+
+        let subsystems = [];
+        if (robot.subsystems && robot.subsystems.length === 0) {
+            subsystems.push("Все подсистемы");
+        } else {
+            subsystems = robot.subsystems;
+        }
 
         const robotElement = document.createElement('div');
         robotElement.className = 'robot';
         robotElement.innerHTML = `
-        <div class="robot-name">${robot.name}</div>
-        <div class="robot-subsystems-list" title="Выбрать подсистемы"><a href="#">${robot.subsystems.join(", ") || "Все подсистемы"}</a></div>
-        <button class="delete-robot" data-id="${robot.id}" id="${idDelButton}" title="Удалить робота">&times;</button>        
+            <div class="robot-name">${robot.name}</div>
+            <div class="robot-subsystems-list" title="Выбрать подсистемы"><a href="#">${subsystems.join(", ") || "Все подсистемы"}</a></div>
+            <div class="robot-status">${statusRus}</div>
+            ${robot.status === "deleting" ?
+                    '' :
+                    `<button class="delete-robot" data-id="${robot.id}" id="${idDelButton}" title="Удалить робота">&times;</button>`
+                }
         `;
-
         robotElement.querySelector('.robot-subsystems-list').addEventListener('click', () => {
             this.selectSubsystems(robot);
         });
 
         const deleteRobotButton = robotElement.querySelector('#' + idDelButton);
-        deleteRobotButton.addEventListener('click', () => {
-            deleteRobotButton.classList.add('working-progress');
-            deleteRobotButton.disabled = true;
-            this.dataService.deleteRobot(robot).then(() => {
-                this.dataService.getRobots().then(r => this.app.renderRobots(r));
-            }).catch(error => {
-                console.error('Ошибка при удалении робота', error);
-                deleteRobotButton.classList.remove('working-progress');
-                deleteRobotButton.disabled = false;
+        if (deleteRobotButton) {
+            deleteRobotButton.addEventListener('click', () => {
+                deleteRobotButton.classList.add('working-progress');
+                deleteRobotButton.disabled = true;
+                this.dataService.deleteRobot(robot).then(() => {
+                    this.dataService.getRobots().then(r => this.app.renderRobots(r));
+                }).catch(error => {
+                    console.error('Ошибка при удалении робота', error);
+                    deleteRobotButton.classList.remove('working-progress');
+                    deleteRobotButton.disabled = false;
+                });
             });
-        });
+        }
 
         return robotElement;
     }

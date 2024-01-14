@@ -7,6 +7,7 @@ class Task {
         this.robot = taskAPI.robot || null;
         this.errorDescription = taskAPI.errorDescription || '';
         this.text = taskAPI.text || '';
+        this.properties = taskAPI.properties || {};
         this.executionAttempts = taskAPI.executionAttempts || 0;
 
         this.creationDate = taskAPI.creationDate ? new Date(taskAPI.creationDate) : null;

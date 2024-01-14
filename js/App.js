@@ -35,6 +35,9 @@ class App {
     }
 
     renderSettings(settings) {
+        //this.renderSwitch(settings);
+    }
+    renderSwitch(settings) {
         if (!this.mainToggleElement) {
             this.mainToggleElement = document.getElementById('toggle-system');
         }
@@ -86,11 +89,11 @@ class App {
             this.updateView();
         })
 
-        this.mainToggle().addEventListener('change',(event) => {
-            this.dataService.setSettings({isActive: this.mainToggle().checked}).then(() => {
-                this.updateView();
-            });
-        });
+        // this.mainToggle().addEventListener('change',(event) => {
+        //     this.dataService.setSettings({isActive: this.mainToggle().checked}).then(() => {
+        //         this.updateView();
+        //     });
+        // });
         document.addEventListener('updateView', () => {
             this.updateView();
         });

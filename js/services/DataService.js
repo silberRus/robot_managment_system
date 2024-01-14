@@ -37,10 +37,10 @@ class DataService {
     };
 
     async getRobots() {
-        const r = await this.connector.getRobots();
         this.robots = [];
+        const r = await this.connector.getRobots();
         for (let i = 0; i < r.length; i++) {
-            this.robots.push(new Robot(r[i].name, r[i].subsystems));
+            this.robots.push(new Robot(r[i].name, r[i].subsystems, r[i].status, r[i].currentTask));
         }
         return this.robots;
     }

@@ -179,64 +179,54 @@ class ConnectorMock {
         ];
         this.robots = [
             {
-                "name": "BUMBLEBEE",
+                "name": "ChuckleGLaDOS",
                 "subsystems": [],
-                "insertDate": "2024-01-03T21:16:56",
-                "currentTaskGuid": "",
+                "insertDate": "2024-01-14T12:22:48",
+                "thredGUID": "",
                 "currentTask": "",
                 "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
+                "errorDescription": "",
+                "status": "idle"
             },
             {
-                "name": "GLaDOS",
+                "name": "GiggleGear",
                 "subsystems": [],
-                "insertDate": "2024-01-03T21:17:18",
-                "currentTaskGuid": "",
+                "insertDate": "2024-01-14T12:22:48",
+                "thredGUID": "",
                 "currentTask": "",
                 "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
+                "errorDescription": "",
+                "status": "idle"
             },
             {
-                "name": "IRONMAN",
+                "name": "Guffaw-BEE",
                 "subsystems": [],
-                "insertDate": "2024-01-03T21:16:55",
-                "currentTaskGuid": "",
+                "insertDate": "2024-01-14T12:22:40",
+                "thredGUID": "",
                 "currentTask": "",
                 "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
+                "errorDescription": "",
+                "status": "idle"
             },
             {
-                "name": "Ева",
+                "name": "Smiles-a-C3PO",
                 "subsystems": [],
-                "insertDate": "2024-01-03T21:17:16",
-                "currentTaskGuid": "",
+                "insertDate": "2024-01-14T12:22:40",
+                "thredGUID": "",
                 "currentTask": "",
                 "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
+                "errorDescription": "",
+                "status": "idle"
             },
             {
-                "name": "Рита",
+                "name": "Smiles-a-Lot",
                 "subsystems": [],
-                "insertDate": "2024-01-03T19:19:26",
-                "currentTaskGuid": "",
+                "insertDate": "2024-01-14T12:22:40",
+                "thredGUID": "",
                 "currentTask": "",
                 "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
-            },
-            {
-                "name": "Федя",
-                "subsystems": [],
-                "insertDate": "2024-01-03T19:11:10",
-                "currentTaskGuid": "",
-                "currentTask": "",
-                "currentTaskUUID": "",
-                "errorDescription": "idle",
-                "status": null
+                "errorDescription": "",
+                "status": "idle"
             }
         ];
 
@@ -264,7 +254,26 @@ class ConnectorMock {
                         "creationDate": "2024-01-03T16:57:09",
                         "completionDate": "2024-01-07T22:05:19",
                         "launchDate": "2024-01-07T22:05:18",
-                        "tasks": []
+                        "text": "ЭтотОбъект = XMLЗначение(Тип(\"ДокументСсылка.МаршрутныйЛист\"), \"9aeaebbf-bdb7-11ed-a21b-b47af1468eb0\").ПолучитьОбъект();\n\nЭтотОбъект.ДополнительныеСвойства.Вставить(\"ВыполнитьОбработчики\", Ложь);\nЭтотОбъект.РасчитатьСуммовыеПоказатели_Фоново(Статус);\nЭтотОбъект.Записать();",
+                        "tasks": [],
+                        "properties": {
+                            "МарХ": true,
+                            "Магистральный": false,
+                            "Масса": 264.398,
+                            "Объем": 1.21463,
+                            "ФактическаяДатаДоставки": "0001-01-01T00:00:00",
+                            "КоличествоМест": 158,
+                            "ДатаОтгрузки": "2023-03-08T00:00:00",
+                            "ПробегПлан": 76.469,
+                            "ВремяНаЛинии": "0001-01-01T06:55:00",
+                            "ПометкаУдаления": false,
+                            "ПеревозчикЗаказной": false,
+                            "КонвейерМСК": true,
+                            "ИспользуетсяОборотнаяТара": false,
+                            "ДатаЗакрытияПериодаМЛ": "2023-02-15T00:00:00",
+                            "КоэффициентПаллет": 0,
+                            "ДатаВыездаВРейс": "2023-03-08T00:00:00"
+                        }
                     },
                     {
                         "UID": "a606a1c3-fe37-4cfa-b775-6ff99836ff54",
