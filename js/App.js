@@ -8,6 +8,7 @@ class App {
         this.tasksPerPage = 10;
         this.updateTasksDebounced = this.debounce(this.updateView, 500);
         this.mainToggleElement = null;
+        this.currentBaseElement = document.getElementById('currentBase');
     }
 
     mainToggle = () => document.getElementById('toggle-system');
@@ -68,10 +69,25 @@ class App {
         });
     }
 
+    renderBasesList() {
+        const element = document.getElementById('bases');
+        const appInstance = this;
+
+        Settings.getInstance().listBases.forEach(base => {
+            const option = document.createElement('div');
+            option.innerText = base.name;
+            option.addEventListener('click', function() {
+                appInstance.setBase(base.url, base.name);
+                element.style.display = 'none';
+            });
+            element.appendChild(option);
+        });
+    }
+
     addEventListeners() {
         const addRobotButton = document.getElementById('addRobot');
         addRobotButton.addEventListener('click', async () => {
-            addRobotButton.classList.add('working-progress');
+            // addRobotButton.classList.add('working-progress');
             addRobotButton.disabled = true;
             try {
                 await this.dataService.addRobot();
@@ -121,10 +137,25 @@ class App {
 
 
     init() {
+        this.renderBasesList();
         this.addEventListeners();
         this.dataService.getSettings().then(s => this.renderSettings(s));
         this.dataService.getSubsystems().then(s => this.renderSubsystems(s));
-        this.updateView();
+
+        const first = Settings.getInstance().listBases[0];
+        this.setBase(first.url, first.name);
+
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            document.getElementById('bases').style.display = 'block';
+        });
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const withinBoundaries = event.composedPath().includes(dropdown);
+
+            if (!withinBoundaries) {
+                document.getElementById('bases').style.display = 'none';
+            }
+        });
     }
 
     // Ограничитель запросов к 1с чтобы не долбить сервер
@@ -139,6 +170,13 @@ class App {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    setBase(url, name) {
+        const settings = Settings.getInstance();
+        this.dataService.setBase(settings.url_start + url + settings.url_end);
+        this.currentBaseElement.innerText = name;
+        this.updateView();
     }
 }
 

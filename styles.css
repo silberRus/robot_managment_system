@@ -15,15 +15,15 @@ body {
 
 #main {
     display: flex;
-    gap: 20px; /* Добавляет пространство между sidebar и content */
+    gap: 20px;
 }
 
 #sidebar {
-    width: 200px; /* Фиксированная ширина для sidebar */
+    width: 200px;
 }
 
 #content {
-    flex-grow: 1; /* content занимает все доступное пространство */
+    flex-grow: 1;
 }
 
 .robot, .subsystem, .package {
@@ -32,19 +32,20 @@ body {
     border-radius: 4px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: box-shadow 0.3s ease; /* Плавное изменение тени */
+    transition: box-shadow 0.3s ease;
+    margin: 2px;
 }
 
 #robots {
     display: flex;
     align-items: center;
-    overflow-x: auto; /* Позволяет прокручивать роботов горизонтально, если они не помещаются */
-    flex-grow: 1; /* Роботы займут всё доступное пространство */
-    margin-left: 10px; /* Отступ слева от кнопки */
+    overflow-x: auto;
+    flex-grow: 1;
+    margin-left: 10px;
 }
 
 .robot:hover, .subsystem:hover, .package:hover, .task:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Тень при наведении */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .delete-robot {
@@ -53,27 +54,27 @@ body {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: #ccc; /* Серый цвет иконки по умолчанию */
+    color: #ccc;
 }
 
 .delete-robot:hover {
-    color: #e74c3c; /* Красный цвет иконки при наведении */
+    color: #e74c3c;
 }
 
 .robot, .subsystem {
     text-align: center;
-    margin-bottom: 10px; /* Отступ снизу для роботов и подсистем */
+    margin-bottom: 10px;
 }
 
 .robot-name, .subsystem-name {
-    display: block; /* Имена отображаются на отдельной строке */
+    display: block;
     font-weight: bold;
-    margin-bottom: 5px; /* Отступ после имени */
+    margin-bottom: 5px;
 }
 
 .select-subsystems, .delete-robot {
-    margin-top: 5px; /* Отступ сверху для кнопок */
-    display: block; /* Кнопки занимают всю ширину контейнера */
+    margin-top: 5px;
+    display: block;
 }
 
 button {
@@ -82,25 +83,24 @@ button {
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #f1ca6e; /* Цвет фона при наведении */
+    background-color: #f1ca6e;
 }
 
 /* ------------------- Стили для модального окна -----------------*/
 
 .subsystem-checkbox-container {
-    padding-left: 0; /* Нет отступа для корневых подсистем */
+    padding-left: 0;
 }
 
 .subsystem-checkbox-container .children {
-    padding-left: 20px; /* Отступ для подчиненных подсистем */
-    border-left: 1px solid #eee; /* Визуальное отделение уровней иерархии */
+    padding-left: 20px;
+    border-left: 1px solid #eee;
 }
 
-/* Стили для модального окна остаются без изменений */
 .modal {
     position: fixed;
     top: 50%;
@@ -117,34 +117,31 @@ button:hover {
 }
 
 .overlay {
-    display: none; /* Скрыто по умолчанию */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
-    z-index: 999; /* Чтобы оверлей был под модальным окном */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
-/* ------------------- Стили для тумблера -----------------*/
+/* ------------------- Стили для тумблера (отключим т.к. регламентные прав не хватит) -----------------*/
 .switch {
     position: relative;
     display: inline-block;
-    width: 120px; /* ширина кнопки */
-    height: 50px; /* высота кнопки */
+    width: 120px;
+    height: 50px;
     margin: 10px;
-    /*position: relative; /* Для позиционирования подсказки */
 }
 
-/* Скрытие стандартного чекбокса */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-/* Стили для слайдера/тумблера */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -152,43 +149,40 @@ button:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc; /* серый цвет фона для выключенного состояния */
+    background-color: #ccc;
     transition: .4s;
-    border-radius: 34px; /* закругленные углы */
+    border-radius: 34px;
 }
 
 .slider:before {
     position: absolute;
     content: "выкл";
-    color: #aaa; /* более темный серый цвет текста для надписи "Остановлено" */
+    color: #aaa;
     display: block;
-    width: 120px; /* ширина должна совпадать с шириной .slider */
-    height: 50px; /* высота должна совпадать с высотой .slider */
-    line-height: 50px; /* центрирование текста по вертикали */
-    text-align: center; /* центрирование текста по горизонтали */
-    background-color: #ccc; /* серый цвет фона для выключенного состояния */
+    width: 120px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #ccc;
     transition: .4s;
-    border-radius: 34px; /* закругленные углы */
+    border-radius: 34px;
 }
 
-/* Стиль для чекбокса, когда он в состоянии :checked */
 input:checked + .slider {
-    background-color: #4caf50; /* зеленый цвет фона для включенного состояния */
+    background-color: #4caf50;
 }
 
 input:checked + .slider:before {
     content: "ВКЛ";
-    background-color: #4caf50; /* зеленый цвет фона для текста "ВКЛ" */
+    background-color: #4caf50;
     color: white;
 }
 
-/* Добавление эффектов при фокусе */
 input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
 .switch {
-    // спрячем
     display: none;
 }
 
@@ -205,7 +199,7 @@ input:focus + .slider {
     z-index: 1;
     bottom: 150%;
     left: 50%;
-    margin-left: -60px; /* Отцентровать подсказку */
+    margin-left: -60px;
     opacity: 0;
     transition: opacity 0.6s;
 }
@@ -228,7 +222,6 @@ input:focus + .slider {
     opacity: 1;
 }
 
-/* Анимация пульсации для индикации процесса */
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
@@ -240,18 +233,14 @@ input:focus + .slider {
     }
 }
 
-/* Стили для кнопки, которая находится в процессе */
 .working-progress {
     animation: pulse 2s infinite;
 }
 
-/* Стили для неактивной кнопки */
 button:disabled {
-    background-color: #ccc; /* Серый фон для неактивной кнопки */
-    cursor: not-allowed;   /* Курсор в виде знака запрета */
+    background-color: #ccc;
+    cursor: not-allowed;
 }
-
-/* Стили для фильтров */
 
 #filters-container {
     display: flex;
@@ -271,12 +260,73 @@ button:disabled {
 
 .filter-button.active {
     color: #000000;
-    background-color: #e0e0e0; /* Темнее при активации */
-    border-color: #a0a0a0; /* Темнее граница */
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Внутренняя тень для эффекта вдавливания */
+    background-color: #e0e0e0;
+    border-color: #a0a0a0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .filter-button:hover {
     background-color: #f0f0f0;
 }
 
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content div {
+    color: black;
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-content div:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.city-name {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    color: #333333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.terminator-style {
+    font-family: 'Orbitron', sans-serif;
+    color: #e6e6e6;
+    text-shadow:
+            1px 1px 2px #000,
+            0 0 4px #000000,
+            0 0 8px #000000,
+            0 0 12px #000000,
+            0 0 16px #000000,
+            0 0 20px #000000,
+            0 0 24px #000000,
+            0 0 28px #000000;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap');

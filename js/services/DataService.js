@@ -2,6 +2,11 @@
 class DataService {
     constructor() {
 
+        if (DataService.instance) {
+            return DataService.instance;
+        }
+        DataService.instance = this;
+
         this.filters = {
             completed: false,
             error: true,
@@ -20,7 +25,7 @@ class DataService {
         this.connector.getSubsystems().then(subsystems => {
             return this.subSystems = this.parseSubsystems(subsystems);
         });
-    }
+   }
 
     setFilterState(filter, value) {
         if (this.filters.hasOwnProperty(filter)) {
@@ -128,5 +133,8 @@ class DataService {
             }
             return subSystem;
         });
+    }
+    setBase(url) {
+         this.connector.setBase(url);
     }
 }

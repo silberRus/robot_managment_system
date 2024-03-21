@@ -3,6 +3,10 @@
 
 class ConnectorMock {
 
+    setBase(url) {
+        console.log("Установлен новый базовый URL: " + url);
+    }
+
     constructor(baseURL = 'testURL', username = 'defaultUsername', password = 'defaultPassword') {
 
         this.pauseMSec = 1000;

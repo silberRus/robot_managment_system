@@ -1,15 +1,15 @@
 class ConnectorAPI {
-    constructor(baseURL = 'http://localhost/MSK/hs/queue_actions/', basicAuth = 'Basic Um9ib3Q6MTIzNDU2') {
+    constructor(baseURL = 'http://localhost/MSK/hs/queue_actions/') {
         this.baseURL = baseURL;
-        this.basicAuth = basicAuth;
         this.robots = [];
         this.tasks = [];
         this.subsystems = [];
+        this.isAuthenticating = false;
     }
 
     async makeRequest(endpoint, method = 'GET', data = null, returnJson = true) {
+
         const headers = {
-            'Authorization': this.basicAuth,
             'Content-Type': 'application/json'
         };
 
@@ -22,11 +22,25 @@ class ConnectorAPI {
             options.body = JSON.stringify(data);
         }
 
-        const response = await fetch(this.baseURL + endpoint, options);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status} body: ${await response.text()}`);
+        try {
+            const response = await fetch(this.baseURL + endpoint, options);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status} body: ${await response.text()}`);
+            }
+            return returnJson ? response.json() : true;
+        } catch (error) {
+            console.error('Ошибка запроса:', error);
+            throw error;
         }
-        return  returnJson ? response.json() : true;
+    }
+
+    setBase(url) {
+        this.baseURL = url;
+    }
+
+    inMemoryAuth() {
+        return localStorage.getItem('authDataEIS_RobotSystems');
     }
 
     async getRobots() {
